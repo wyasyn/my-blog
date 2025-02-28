@@ -118,6 +118,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -136,7 +140,7 @@
   }
 
   h1 {
-    @apply scroll-m-20 text-4xl tracking-tight lg:text-5xl;
+    @apply font-extrabold scroll-m-20 text-4xl tracking-wide lg:text-5xl;
   }
   h2 {
     @apply scroll-m-20 pb-2 text-3xl tracking-tight first:mt-0;
@@ -155,7 +159,7 @@
     @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
   }
   .wrapper {
-    @apply max-w-5xl mx-auto p-3 w-full;
+    @apply max-w-5xl mx-auto p-3 lg:p-8 w-full;
   }
 }
 

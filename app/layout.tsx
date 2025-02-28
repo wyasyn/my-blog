@@ -42,7 +42,7 @@ export default function RootLayout({
       <body className={`${inter.variable} ${playfair.variable}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

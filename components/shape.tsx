@@ -1,20 +1,31 @@
-import { GitMerge, Pi } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export default function Shape() {
+export default function Shape({
+  className,
+  translate,
+}: {
+  className: string;
+  translate: string;
+}) {
   return (
-    <>
-      <div className=" max-[1343px]:hidden absolute top-1/6 left-0 z-1 overflow-clip text-border/45 ">
-        <GitMerge size={250} className="-rotate-12 stroke-1 -ml-14   " />
-        <div className="absolute z-2 inset-0 bg-gradient-to-br from-transparent to-background" />
+    <div
+      className={cn(
+        " max-[1305px]:hidden aspect-square overflow-x-clip absolute ",
+        className
+      )}
+    >
+      <div
+        className={cn(
+          "grid grid-cols-2 w-[200px] 2xl:w-[300px] aspect-square gap-4 rotate-45 ",
+          translate
+        )}
+      >
+        <div className="border " />
+        <div className="border " />
+        <div className="border " />
+        <div className="border " />
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent to-background" />
       </div>
-      <div className=" max-[1343px]:hidden absolute top-1/6 right-0 z-1 overflow-clip text-border/45 ">
-        <GitMerge size={250} className="rotate-120 stroke-1 -mr-14   " />
-        <div className="absolute z-2 inset-0 bg-gradient-to-bl from-transparent to-background" />
-      </div>
-      <div className=" absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-1 overflow-clip text-border/15 ">
-        <Pi size={250} className=" stroke-1 rotate-6 -mr-14   " />
-        <div className="absolute z-2 inset-0 bg-gradient-to-b from-transparent to-background" />
-      </div>
-    </>
+    </div>
   );
 }
