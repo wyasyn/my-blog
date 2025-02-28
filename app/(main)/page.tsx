@@ -1,7 +1,9 @@
 export default function HomePage() {
   return (
     <div>
-      <h1>Home Page</h1>
+      <h1 className=" bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-transparent bg-clip-text">
+        Yasin Walum
+      </h1>
     </div>
   );
 }
