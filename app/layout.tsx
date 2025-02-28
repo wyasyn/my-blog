@@ -1,16 +1,31 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
+// import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/providers/theme-provider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const playfair = localFont({
+  src: "../lib/assets/fonts/PlayfairDisplay.ttf",
+  display: "swap",
+  variable: "--font-play-fair",
+});
+const inter = localFont({
+  src: "../lib/assets/fonts/Inter.ttf",
+  display: "swap",
+  variable: "--font-inter",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const inter = Inter({
+//   subsets: ["latin"],
+//   display: "swap",
+//   variable: "--font-inter",
+// });
+
+// const playfair = Playfair_Display({
+//   subsets: ["latin"],
+//   display: "swap",
+//   variable: "--font-play-fair",
+// });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,11 +38,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} ${playfair.variable}`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

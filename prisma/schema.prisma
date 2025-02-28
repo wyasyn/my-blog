@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  avatarUrl String? // Optional URL to profile picture
+  bio       String? // Optional biography
+  password  String // Store hashed passwords (bcrypt recommended)
+  role      UserRole @default(USER) // Enum for roles
+  createdAt DateTime @default(now())
+
+  projects       Project[]
+  blogPosts      BlogPost[]
+  personalImages PersonalImage[]
+  services       Service[]
+  skills         Skill[]
+  socialLinks    SocialLink[]
+}
+
+model Project {
+  id           String   @id @default(cuid())
+  title        String
+  description  String
+  githubUrl    String? // Optional GitHub repo link
+  liveDemoUrl  String? // Optional live demo link
+  technologies String[] // Stores an array of technologies
+  thumbnail    String? // URL for project thumbnail image
+  createdAt    DateTime @default(now())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  isPublished Boolean   @default(false)
+  tags        String[] // Array of tags
+  publishedAt DateTime? // Null if not published
+  thumbnail   String? // URL for blog post thumbnail image
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PersonalImage {
+  id          String   @id @default(cuid())
+  imageUrl    String // URL where the image is stored
+  title       String? // Optional title for the image
+  description String? // Optional description
+  tags        String[] // Array of tags (e.g., "travel", "coding", "AI")
+  width       Int? // Image width in pixels
+  height      Int? // Image height in pixels
+  uploadedAt  DateTime @default(now()) // Auto timestamp
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String // Service title (e.g., "Web Development", "AI Consulting")
+  description String // Detailed description of the service
+  price       Float? // Optional price (null if not listed)
+  currency    String? // Currency code (e.g., "USD", "EUR"), optional
+  duration    String? // Optional duration (e.g., "1 hour", "2 weeks project")
+  imageUrl    String? // Optional service image/thumbnail
+  tags        String[] // Keywords for searchability (e.g., ["web", "development", "AI"])
+  createdAt   DateTime @default(now()) // Auto timestamp
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  name     String // e.g., "JavaScript"
+  level    String // e.g., "Expert", "Intermediate"
+  category String // e.g., "Frontend", "Backend"
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SocialLink {
+  id       String  @id @default(cuid())
+  platform String // e.g., "GitHub", "LinkedIn"
+  url      String
+  icon     String? // Optional icon URL
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
