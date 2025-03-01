@@ -5,6 +5,7 @@ import Link from "next/link";
 import SkillsComponent from "./skills";
 import Services from "./Services";
 import SectionTitle from "../section-title";
+import ProjectProcess from "../process";
 
 export default function AboutPageContent() {
   return (
@@ -50,6 +51,7 @@ export default function AboutPageContent() {
       </section>
 
       <Services />
+      <ProjectProcess />
 
       {/* Call to Action */}
       <section className="text-center py-14 md:py-20">
