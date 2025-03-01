@@ -6,6 +6,7 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { GithubGlobe } from "./globe-demo";
+import TypewriterText from "../type-writter-effect";
 
 const email = process.env.EMAIL;
 
@@ -39,9 +40,7 @@ export default function Hero() {
         <h1 className="text-balance dark:text-orange-200 text-6xl sm:text-7xl lg:text-9xl font-thin">
           Yasin <br /> Walum.
         </h1>
-        <h2 className=" max-sm:text-xl font-mono text-muted-foreground mt-4 lg:ml-8 md:mt-5">
-          Software Engineer
-        </h2>
+        <TypewriterText text="Software Engineer" />
         <div className="flex gap-4 mt-8 lg:ml-8">
           {socials.map(({ name, icon, link }) => (
             <Button key={name} asChild variant="outline" size="icon">

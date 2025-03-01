@@ -27,6 +27,7 @@ export default function ContactForm() {
   const {
     register,
     handleSubmit,
+    reset, // Add reset function here
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
@@ -36,13 +37,19 @@ export default function ContactForm() {
     try {
       console.log("Form submitted:", data);
       setFormStatus("success");
+      reset();
     } catch {
       setFormStatus("error");
     }
   };
 
+  const handleClear = () => {
+    reset(); // Reset form fields
+    setFormStatus(null); // Optionally clear the form status
+  };
+
   return (
-    <div className=" max-w-lg shadow-md rounded-lg mb-[5rem]">
+    <div className="max-w-lg shadow-md rounded-lg mb-[5rem]">
       {formStatus === "success" && (
         <Alert className="mb-4">
           <MailCheck className="w-4 h-4" />
@@ -53,7 +60,7 @@ export default function ContactForm() {
         </Alert>
       )}
       {formStatus === "error" && (
-        <AlertDestructive message=" Something went wrong. Please try again." />
+        <AlertDestructive message="Something went wrong. Please try again." />
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -115,9 +122,14 @@ export default function ContactForm() {
           )}
         </div>
 
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Sending..." : "Send Message"}
-        </Button>
+        <div className="flex space-x-4 justify-between gap-4">
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Sending..." : "Send Message"}
+          </Button>
+          <Button type="button" onClick={handleClear} variant="outline">
+            Clear
+          </Button>
+        </div>
       </form>
     </div>
   );
