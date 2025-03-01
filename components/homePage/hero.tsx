@@ -9,7 +9,7 @@ import { GithubGlobe } from "./globe-demo";
 
 const email = process.env.EMAIL;
 
-const socials = [
+export const socials = [
   {
     name: "GitHub",
     icon: <PiGithubLogoBold />,
@@ -36,7 +36,7 @@ export default function Hero() {
   return (
     <section className="grid gap-12 md:grid-cols-2 md:items-end ">
       <div className=" pt-14 md:pt-24 ">
-        <h1 className="text-balance dark:text-orange-200 text-5xl sm:text-7xl lg:text-9xl font-thin">
+        <h1 className="text-balance dark:text-orange-200 text-6xl sm:text-7xl lg:text-9xl font-thin">
           Yasin <br /> Walum.
         </h1>
         <h2 className=" max-sm:text-xl font-mono text-muted-foreground mt-4 lg:ml-8 md:mt-5">
