@@ -3,6 +3,8 @@ import profilePic from "@/lib/assets/images/hero.jpg";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import SkillsComponent from "./skills";
+import Services from "./Services";
+import SectionTitle from "../section-title";
 
 export default function AboutPageContent() {
   return (
@@ -39,9 +41,15 @@ export default function AboutPageContent() {
 
       {/* Skills / Experience */}
       <section className="md:py-20 py-14">
-        <h2 className=" mb-2">My Skills</h2>
+        <SectionTitle
+          title="My Skills & Expertise"
+          subtitle="Technologies & Tools"
+        />
+
         <SkillsComponent />
       </section>
+
+      <Services />
 
       {/* Call to Action */}
       <section className="text-center py-14 md:py-20">

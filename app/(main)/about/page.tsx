@@ -1,4 +1,4 @@
-import AboutPageContent from "@/components/about-page.tsx/about";
+import AboutPageContent from "@/components/aboutPage/about";
 import PageTitle from "@/components/page-title";
 
 export default function AboutPage() {

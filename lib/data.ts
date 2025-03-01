@@ -1,3 +1,5 @@
+import { servicesImages } from "./assets/services";
+
 export const sampleMarkdown = `---
 title: "Introduction to Machine Learning"
 author: "John Doe"
@@ -62,3 +64,62 @@ Want to learn more? Check out [our guide](https://example.com).
 
 
 `;
+
+export const servicesData = [
+  {
+    title: "Web Development",
+    subtitle: "Modern & Scalable Web Solutions",
+    description:
+      "We build high-performance and scalable web applications tailored to your business needs.",
+    icon: servicesImages.development.src,
+  },
+  {
+    title: "Mobile App Development",
+    subtitle: "Android & iOS Applications",
+    description:
+      "We create user-friendly and feature-rich mobile applications for Android and iOS platforms.",
+    icon: servicesImages.mobileDev,
+  },
+  {
+    title: "UI/UX Design",
+    subtitle: "User Experience & Interface Design",
+    description:
+      "We design intuitive and visually appealing interfaces that enhance user experience and engagement.",
+    icon: servicesImages.design.src,
+  },
+  {
+    title: "Cybersecurity Solutions",
+    subtitle: "Protect Your Digital Assets",
+    description:
+      "We offer security solutions to safeguard your applications and data from cyber threats.",
+    icon: servicesImages.cybersecurity,
+  },
+  {
+    title: "AI & Machine Learning",
+    subtitle: "Intelligent Solutions",
+    description:
+      "We integrate AI-driven solutions to automate processes and enhance decision-making.",
+    icon: servicesImages.machineLearning.src,
+  },
+  {
+    title: "Cloud Computing",
+    subtitle: "Scalable & Secure Infrastructure",
+    description:
+      "We help businesses migrate to the cloud for improved scalability, security, and cost-efficiency.",
+    icon: servicesImages.cloud,
+  },
+  {
+    title: "DevOps & Automation",
+    subtitle: "Continuous Integration & Deployment",
+    description:
+      "We streamline development and deployment processes with CI/CD pipelines and automation tools.",
+    icon: servicesImages.automation,
+  },
+  {
+    title: "Data Science & Analytics",
+    subtitle: "Transform Data into Insights",
+    description:
+      "We provide data-driven solutions to help businesses make informed decisions.",
+    icon: servicesImages.dataScience,
+  },
+];
