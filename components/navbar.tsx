@@ -6,10 +6,11 @@ import Image from "next/image";
 import profilePic from "@/lib/assets/images/hero.jpg";
 import NavList from "./nav-list";
 import MobileNavList from "./mobile-nav-list";
+import NavWrapper from "./nav-wrapper";
 
 export default function Navbar() {
   return (
-    <header className=" max-w-[1040px] px-2 py-1 border fixed top-4 lg:top-8 left-1/2 -translate-x-1/2 w-full rounded-lg z-50 bg-secondary/75 backdrop-blur-sm">
+    <NavWrapper>
       <nav className="flex justify-between items-center gap-5">
         <Button asChild variant="ghost" size="icon">
           <Link href="/">
@@ -28,6 +29,6 @@ export default function Navbar() {
           <MobileNavList />
         </section>
       </nav>
-    </header>
+    </NavWrapper>
   );
 }
