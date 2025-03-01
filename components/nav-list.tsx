@@ -5,22 +5,22 @@ export const navData = [
   {
     title: "About",
     href: "/about",
-    icon: <User className="w-5 h-5" />,
+    icon: <User size={32} />,
   },
   {
     title: "Projects",
     href: "/projects",
-    icon: <Briefcase className="w-5 h-5" />,
+    icon: <Briefcase size={32} />,
   },
   {
     title: "Blog",
     href: "/blog",
-    icon: <Newspaper className="w-5 h-5" />,
+    icon: <Newspaper size={32} />,
   },
   {
     title: "Contact",
     href: "/contact",
-    icon: <Mail className="w-5 h-5" />,
+    icon: <Mail size={32} />,
   },
 ];
 export default function NavList() {

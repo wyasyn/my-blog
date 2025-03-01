@@ -11,7 +11,7 @@ const Footer = () => {
           &copy; {new Date().getFullYear()} Yasin Walum. All rights reserved.
         </p>
 
-        <nav className="flex space-x-4 mt-4 md:mt-0">
+        <nav className="flex space-x-4 mt-4 md:mt-0 flex-wrap">
           {navData.map((item, index) => {
             return (
               <Button key={index} variant="link" size="sm">
@@ -21,7 +21,7 @@ const Footer = () => {
           })}
         </nav>
 
-        <div className="flex space-x-4 mt-4 md:mt-0">
+        <div className="flex space-x-4 mt-4 md:mt-0 flex-wrap">
           {socials.map(({ name, icon, link }) => (
             <Button key={name} asChild variant="outline" size="icon">
               <Link href={link} target="_blank" rel="noopener noreferrer">

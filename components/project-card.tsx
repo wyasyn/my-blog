@@ -3,18 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 import placeholderImage from "@/lib/assets/images/placeholder.webp";
 import { motion } from "motion/react";
+import { cn } from "@/lib/utils";
 
-export default function ProjectCard() {
+export default function ProjectCard({ index }: { index: number }) {
   return (
     <Link
       href={`/projects/slug`}
-      className="group hover:shadow-lg duration-300 transition-all"
+      className={cn(
+        "group hover:shadow-lg duration-300 transition-all",
+        index % 2 === 0 ? "md:translate-y-[150px]" : "md:translate-y-0"
+      )}
     >
       <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        viewport={{ once: true }}
+        viewport={{ once: true, amount: 0.3 }}
       >
         <div className=" w-full aspect-square md:aspect-video rounded-lg overflow-hidden">
           <Image

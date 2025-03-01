@@ -15,6 +15,7 @@ import { navData } from "./nav-list";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Logo from "./logo";
 
 export default function MobileNavList() {
   const pathname = usePathname();
@@ -35,7 +36,7 @@ export default function MobileNavList() {
               </SheetDescription>
             </SheetHeader>
           </VisuallyHidden>
-          <ul className="flex flex-col gap-6 mt-8 p-8 ">
+          <ul className="flex flex-col gap-6 mt-8 p-8 font-serif text-3xl ">
             {navData.map((item) => {
               const isActive =
                 item.href === "/"
@@ -45,7 +46,7 @@ export default function MobileNavList() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`flex items-center gap-5 hover:bg-accent px-3 py-2 rounded-lg duration-300 ${
+                    className={`flex items-center gap-8 hover:bg-accent px-3 py-2 rounded-lg duration-300 ${
                       isActive ? "text-foreground" : "text-muted-foreground"
                     }`}
                     onClick={() => setIsOpen(false)}
@@ -60,6 +61,9 @@ export default function MobileNavList() {
               );
             })}
           </ul>
+          <div className="mt-auto p-8 flex items-center gap-4 border-t rounded-[0_2rem_0_0] bg-secondary">
+            <Logo /> <span>Yasin Walum</span>
+          </div>
         </SheetContent>
       </Sheet>
     </div>

@@ -9,14 +9,11 @@ export default function Shape({
 }) {
   return (
     <div
-      className={cn(
-        " max-[1305px]:hidden aspect-square overflow-x-clip absolute ",
-        className
-      )}
+      className={cn("z-1 aspect-square overflow-x-clip absolute ", className)}
     >
       <div
         className={cn(
-          "grid grid-cols-2 w-[200px] 2xl:w-[300px] aspect-square gap-4 rotate-45 ",
+          "grid grid-cols-2 aspect-square gap-4 rotate-45 ",
           translate
         )}
       >
