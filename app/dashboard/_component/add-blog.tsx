@@ -8,19 +8,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import CreateBlog from "./create-blog";
 
-import CreateProject from "./create-project";
-
-export default function AddProject() {
+export default function AddBlog() {
   return (
     <div className=" w-full flex items-center justify-end py-3 mb-4">
       <Dialog>
         <DialogTrigger asChild>
           <Button
             size="icon"
-            aria-label="Add New Project"
+            aria-label="Add New blog"
             type="button"
-            title="Add button"
+            title="Add blog"
             className="cursor-pointer"
           >
             <PlusIcon className="h-6 w-6" />
@@ -28,13 +27,12 @@ export default function AddProject() {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Create Project</DialogTitle>
+            <DialogTitle>Create Blog</DialogTitle>
             <DialogDescription>
-              Upload markdown containing frontmatter like title and technologies
-              used
+              Upload markdown containing frontmatter like title and tags
             </DialogDescription>
           </DialogHeader>
-          <CreateProject />
+          <CreateBlog />
         </DialogContent>
       </Dialog>
     </div>
