@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/db";
 import { makeSlug } from "@/lib/utils";
 import { deleteImage, uploadImage } from "./image-actions";
+import { cache } from "react";
 
 export const createProject = async (formData: FormData) => {
   const imageFile = formData.get("imageFile") as File | null;
@@ -54,7 +55,7 @@ export const createProject = async (formData: FormData) => {
   }
 };
 
-export async function getPaginatedProjects(page = 1, pageSize = 4) {
+export const getPaginatedProjects = cache(async (page = 1, pageSize = 4) => {
   const MAX_PAGE_SIZE = 20; // Set an upper limit for page size
 
   // Ensure valid pagination inputs
@@ -90,7 +91,7 @@ export async function getPaginatedProjects(page = 1, pageSize = 4) {
         "An error occurred while fetching projects. Please try again later.",
     };
   }
-}
+});
 
 export const deleteProject = async (slug: string) => {
   try {
@@ -192,7 +193,7 @@ export const editProject = async (formData: FormData) => {
   }
 };
 
-export const getProjectById = async (id: string) => {
+export const getProjectById = cache(async (id: string) => {
   try {
     const project = await prisma.project.findUnique({
       where: { id },
@@ -206,93 +207,93 @@ export const getProjectById = async (id: string) => {
     console.error("Error fetching project by ID:", error);
     return { error: "An error occurred while fetching the project" };
   }
-};
+});
 
-export const searchProjects = async (query: string, page = 1, pageSize = 4) => {
-  if (!query.trim()) return { error: "Search query cannot be empty" };
+export const searchProjects = cache(
+  async (query: string, page = 1, pageSize = 4) => {
+    if (!query.trim()) return { error: "Search query cannot be empty" };
 
-  const skip = (page - 1) * pageSize;
+    const skip = (page - 1) * pageSize;
 
-  try {
-    const [projects, total] = await prisma.$transaction([
-      prisma.project.findMany({
-        where: {
-          OR: [
-            { title: { contains: query, mode: "insensitive" } },
-            { content: { contains: query, mode: "insensitive" } },
-          ],
-        },
-        skip,
-        take: pageSize,
-        orderBy: { createdAt: "desc" },
-        include: { technologies: true },
-      }),
-      prisma.project.count({
-        where: {
-          OR: [
-            { title: { contains: query, mode: "insensitive" } },
-            { content: { contains: query, mode: "insensitive" } },
-          ],
-        },
-      }),
-    ]);
-
-    return {
-      projects,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(total / pageSize),
-        total,
-      },
-    };
-  } catch (error) {
-    console.error("Error searching projects:", error);
-    return { error: "An error occurred while searching for projects" };
-  }
-};
-export const getProjectsByTechnology = async (
-  technologyName: string,
-  page = 1,
-  pageSize = 4
-) => {
-  const skip = (page - 1) * pageSize;
-
-  try {
-    const [projects, total] = await prisma.$transaction([
-      prisma.project.findMany({
-        where: {
-          technologies: {
-            some: { name: { equals: technologyName, mode: "insensitive" } },
+    try {
+      const [projects, total] = await prisma.$transaction([
+        prisma.project.findMany({
+          where: {
+            OR: [
+              { title: { contains: query, mode: "insensitive" } },
+              { content: { contains: query, mode: "insensitive" } },
+            ],
           },
-        },
-        skip,
-        take: pageSize,
-        orderBy: { createdAt: "desc" },
-        include: { technologies: true },
-      }),
-      prisma.project.count({
-        where: {
-          technologies: {
-            some: { name: { equals: technologyName, mode: "insensitive" } },
+          skip,
+          take: pageSize,
+          orderBy: { createdAt: "desc" },
+          include: { technologies: true },
+        }),
+        prisma.project.count({
+          where: {
+            OR: [
+              { title: { contains: query, mode: "insensitive" } },
+              { content: { contains: query, mode: "insensitive" } },
+            ],
           },
-        },
-      }),
-    ]);
+        }),
+      ]);
 
-    return {
-      projects,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(total / pageSize),
-        total,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching projects by technology:", error);
-    return { error: "An error occurred while fetching projects" };
+      return {
+        projects,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(total / pageSize),
+          total,
+        },
+      };
+    } catch (error) {
+      console.error("Error searching projects:", error);
+      return { error: "An error occurred while searching for projects" };
+    }
   }
-};
-export const getProjectBySlug = async (slug: string) => {
+);
+export const getProjectsByTechnology = cache(
+  async (technologyName: string, page = 1, pageSize = 4) => {
+    const skip = (page - 1) * pageSize;
+
+    try {
+      const [projects, total] = await prisma.$transaction([
+        prisma.project.findMany({
+          where: {
+            technologies: {
+              some: { name: { equals: technologyName, mode: "insensitive" } },
+            },
+          },
+          skip,
+          take: pageSize,
+          orderBy: { createdAt: "desc" },
+          include: { technologies: true },
+        }),
+        prisma.project.count({
+          where: {
+            technologies: {
+              some: { name: { equals: technologyName, mode: "insensitive" } },
+            },
+          },
+        }),
+      ]);
+
+      return {
+        projects,
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(total / pageSize),
+          total,
+        },
+      };
+    } catch (error) {
+      console.error("Error fetching projects by technology:", error);
+      return { error: "An error occurred while fetching projects" };
+    }
+  }
+);
+export const getProjectBySlug = cache(async (slug: string) => {
   try {
     const project = await prisma.project.findUnique({
       where: { slug },
@@ -306,9 +307,9 @@ export const getProjectBySlug = async (slug: string) => {
     console.error("Error fetching project by slug:", error);
     return { error: "An error occurred while fetching the project" };
   }
-};
+});
 
-export const getRelatedProjects = async (slug: string, limit = 4) => {
+export const getRelatedProjects = cache(async (slug: string, limit = 4) => {
   try {
     // Get the project's technologies
     const project = await prisma.project.findUnique({
@@ -340,4 +341,4 @@ export const getRelatedProjects = async (slug: string, limit = 4) => {
     console.error("Error fetching related projects:", error);
     return { error: "An error occurred while fetching related projects" };
   }
-};
+});

@@ -1,4 +1,5 @@
 "use client";
+import { editProject } from "@/app/_actions/project-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,6 +10,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { toast } from "sonner";
 
 interface EditProjectProps {
   project: {
@@ -18,10 +20,9 @@ interface EditProjectProps {
     imageId?: string;
     technologies: { id: string; name: string }[];
   };
-  onSave: (formData: FormData) => Promise<void>;
 }
 
-const EditProject: React.FC<EditProjectProps> = ({ project, onSave }) => {
+const EditProject: React.FC<EditProjectProps> = ({ project }) => {
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
       title: project.title,
@@ -48,7 +49,13 @@ const EditProject: React.FC<EditProjectProps> = ({ project, onSave }) => {
       formData.append("imageFile", data.imageFile[0]);
     }
 
-    await onSave(formData);
+    const { message, error } = await editProject(formData);
+
+    if (message) {
+      toast(message);
+    } else if (error) {
+      toast.error(error);
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,7 +152,7 @@ const EditProject: React.FC<EditProjectProps> = ({ project, onSave }) => {
 
         {/* Submit Button */}
         <Button type="submit">
-          <Save className="w-4 h-4 mr-3" /> Save Changes
+          <Save className="w-4 h-4 mr-2" /> Save Changes
         </Button>
       </form>
     </div>

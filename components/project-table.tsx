@@ -8,32 +8,21 @@ import {
 } from "@/components/ui/table";
 import TablePagination from "./pagination";
 import { Button } from "./ui/button";
-import { FilePenLine, Trash2 } from "lucide-react";
+import { FilePenLine } from "lucide-react";
+import { getPaginatedProjects } from "@/app/_actions/project-actions";
+import Link from "next/link";
+import DeleteProjectBtn from "@/app/dashboard/_component/delete-project-btn";
 
-const programmingLanguages = [
-  {
-    id: "1",
-    title: "JavaScript",
-  },
-  {
-    id: "2",
-    title: "Python",
-  },
-  {
-    id: "3",
-    title: "Java",
-  },
-  {
-    id: "4",
-    title: "C++",
-  },
-  {
-    id: "5",
-    title: "Ruby",
-  },
-];
+export default async function ProjectTable({
+  currentPage,
+}: {
+  currentPage: number;
+}) {
+  const { projects, pagination } = await getPaginatedProjects(currentPage);
+  if (!projects || projects.length === 0) {
+    return <p>No Projects found</p>;
+  }
 
-export default function ProjectTable() {
   return (
     <div>
       <div className="bg-background overflow-hidden rounded-md border mb-8">
@@ -45,10 +34,10 @@ export default function ProjectTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {programmingLanguages.map((language) => (
-              <TableRow key={language.id}>
+            {projects.map((project) => (
+              <TableRow key={project.id}>
                 <TableCell className="py-2 font-medium truncate">
-                  {language.title}
+                  {project.title}
                 </TableCell>
 
                 <TableCell className="py-2 flex items-center justify-center gap-4">
@@ -57,24 +46,25 @@ export default function ProjectTable() {
                     size="icon"
                     className="cursor-pointer"
                     title="Edit Project"
+                    asChild
                   >
-                    <FilePenLine />
+                    <Link href={`/dashboard/projects/${project.id}`}>
+                      <FilePenLine />
+                    </Link>
                   </Button>
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="cursor-pointer"
-                    title="Delete project"
-                  >
-                    <Trash2 />
-                  </Button>
+                  <DeleteProjectBtn slug={project.slug} />
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
-      <TablePagination currentPage={2} totalPages={10} />
+      {pagination.totalPages > 1 && (
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={pagination.totalPages}
+        />
+      )}
     </div>
   );
 }
