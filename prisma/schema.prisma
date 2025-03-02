@@ -24,51 +24,57 @@ model User {
 
   projects       Project[]
   blogPosts      BlogPost[]
-  personalImages PersonalImage[]
+  personalImages Image[]
   services       Service[]
   skills         Skill[]
   socialLinks    SocialLink[]
 }
 
 model Project {
-  id           String   @id @default(cuid())
-  title        String
-  description  String
-  githubUrl    String? // Optional GitHub repo link
-  liveDemoUrl  String? // Optional live demo link
-  technologies String[] // Stores an array of technologies
-  thumbnail    String? // URL for project thumbnail image
-  createdAt    DateTime @default(now())
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  slug      String   @unique
+  thumbnail Image    @relation(fields: [imageId], references: [id]) // URL for project thumbnail image
+  createdAt DateTime @default(now())
 
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String?
+  user         User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  technologies Technology[] @relation("ProjectToTechnology")
+  imageId      String
 }
 
 model BlogPost {
   id          String    @id @default(cuid())
   title       String
   content     String
+  slug        String    @unique
   isPublished Boolean   @default(false)
-  tags        String[] // Array of tags
+  tags        Tag[]     @relation("BlogPostToTag")
   publishedAt DateTime? // Null if not published
-  thumbnail   String? // URL for blog post thumbnail image
+  thumbnail   Image     @relation(fields: [imageId], references: [id]) // URL for blog post thumbnail image
 
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String?
+  user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  imageId String
 }
 
-model PersonalImage {
+model Image {
   id          String   @id @default(cuid())
   imageUrl    String // URL where the image is stored
   title       String? // Optional title for the image
   description String? // Optional description
+  publicId    String
   tags        String[] // Array of tags (e.g., "travel", "coding", "AI")
   width       Int? // Image width in pixels
   height      Int? // Image height in pixels
+  blurDataUrl String?
   uploadedAt  DateTime @default(now()) // Auto timestamp
 
-  userId String?
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String?
+  user     User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  BlogPost BlogPost[]
+  Project  Project[]
 }
 
 model Service {
@@ -104,4 +110,22 @@ model SocialLink {
 
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Technology {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[] @relation("ProjectToTechnology")
+}
+
+model Tag {
+  id        String     @id @default(cuid())
+  name      String     @unique
+  slug      String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  blogPost  BlogPost[] @relation("BlogPostToTag")
 }

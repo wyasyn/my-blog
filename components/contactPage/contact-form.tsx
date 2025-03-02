@@ -8,7 +8,8 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { AlertDestructive } from "../danger-alert";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { MailCheck } from "lucide-react";
+import { MailCheck, Trash2 } from "lucide-react";
+import { sendEmail } from "@/app/_actions/contact-action";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -27,7 +28,7 @@ export default function ContactForm() {
   const {
     register,
     handleSubmit,
-    reset, // Add reset function here
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
@@ -35,9 +36,23 @@ export default function ContactForm() {
 
   const onSubmit = async (data: ContactFormValues) => {
     try {
-      console.log("Form submitted:", data);
-      setFormStatus("success");
-      reset();
+      const validation = contactSchema.safeParse(data);
+
+      if (!validation.success) {
+        setFormStatus("error");
+        return;
+      }
+      try {
+        const response = await sendEmail(data);
+        if (response.error) {
+          setFormStatus("error");
+        } else {
+          setFormStatus("success");
+          reset();
+        }
+      } catch {
+        setFormStatus("error");
+      }
     } catch {
       setFormStatus("error");
     }
@@ -126,7 +141,8 @@ export default function ContactForm() {
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Sending..." : "Send Message"}
           </Button>
-          <Button type="button" onClick={handleClear} variant="outline">
+          <Button type="button" onClick={handleClear} variant="destructive">
+            <Trash2 className="w-4 h-4 mr-2" />
             Clear
           </Button>
         </div>
