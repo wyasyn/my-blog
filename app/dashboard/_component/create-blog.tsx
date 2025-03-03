@@ -1,9 +1,11 @@
 "use client";
+import { createBlog } from "@/app/_actions/blog-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import matter from "gray-matter";
 import { CircleCheck, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -11,6 +13,7 @@ export default function CreateBlog() {
   const [body, setBody] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
+  const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,7 +37,7 @@ export default function CreateBlog() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!imageFile || !body) {
       toast.error("Please provide both an image and a markdown file.");
@@ -52,11 +55,17 @@ export default function CreateBlog() {
       formData.append("content", content);
       formData.append("tags", tags);
 
-      console.log("Form Data Ready:", { title, content, tags, imageFile });
+      const { success, error } = await createBlog(formData);
 
-      toast.success(
-        "Blog successfully prepared! (Replace console.log with API call)"
-      );
+      if (success) {
+        toast.success("Blog created successfully");
+        setBody("");
+        setImageFile(null);
+        setFileName("");
+        router.refresh();
+      } else if (error) {
+        toast.error("Failed to create blog: " + error);
+      }
     } catch {
       toast.error(
         "Error parsing markdown file. Ensure it has valid frontmatter."

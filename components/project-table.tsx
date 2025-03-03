@@ -63,6 +63,7 @@ export default async function ProjectTable({
         <TablePagination
           currentPage={currentPage}
           totalPages={pagination.totalPages}
+          baseUrl="/dashboard/projects"
         />
       )}
     </div>

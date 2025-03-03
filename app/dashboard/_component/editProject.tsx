@@ -18,7 +18,11 @@ interface EditProjectProps {
     id: string;
     title: string;
     content: string;
-    imageId?: string;
+    thumbnail: {
+      imageUrl: string;
+      width?: number | null;
+      height?: number | null;
+    };
     technologies: { id: string; name: string }[];
   };
 }
@@ -76,7 +80,7 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
       <h2 className="text-2xl font-bold mb-4">Edit Project</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Title */}
-        <div>
+        <div className="space-y-3">
           <Label htmlFor="title" className="block font-medium">
             Title
           </Label>
@@ -88,7 +92,7 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
         </div>
 
         {/* Technologies */}
-        <div>
+        <div className="space-y-3">
           <Label htmlFor="tech" className="block font-medium">
             Technologies (comma-separated)
           </Label>
@@ -100,7 +104,7 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
         </div>
 
         {/* Description (Markdown Editor) */}
-        <div>
+        <div className="space-y-3">
           <Label htmlFor="body" className="block font-medium">
             Description
           </Label>
@@ -128,7 +132,7 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
         </div>
 
         {/* Image Upload */}
-        <div>
+        <div className="space-y-3">
           <Label htmlFor="image" className="block font-medium">
             Project Image
           </Label>
@@ -143,20 +147,24 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
               src={imagePreview}
               alt="Preview"
               className="mt-2 w-32 h-32 object-cover rounded"
+              width={200}
+              height={200}
             />
           ) : (
-            project.imageId && (
+            project.thumbnail && (
               <Image
-                src={`/images/${project.imageId}`} // Adjust URL based on your backend
+                src={project.thumbnail.imageUrl} // Adjust URL based on your backend
                 alt="Current"
                 className="mt-2 w-32 h-32 object-cover rounded"
+                width={project.thumbnail.width || 200}
+                height={project.thumbnail.height || 200}
               />
             )
           )}
         </div>
 
         {/* Submit Button */}
-        <Button type="submit">
+        <Button type="submit" className="cursor-pointer">
           <Save className="w-4 h-4 mr-2" /> Save Changes
         </Button>
       </form>

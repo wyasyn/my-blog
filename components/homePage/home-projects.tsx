@@ -24,6 +24,7 @@ export default async function HomeProjects({
         <TablePagination
           currentPage={currentPage}
           totalPages={pagination.totalPages}
+          baseUrl={showPagination ? "/projects" : "/"}
         />
       )}
     </section>

@@ -1,25 +1,27 @@
-import { usePagination } from "@/hooks/use-pagination";
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-} from "@/components/ui/pagination";
+} from "./ui/pagination";
+import { buttonVariants } from "./ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { usePagination } from "@/hooks/use-pagination";
 
 type PaginationProps = {
   currentPage: number;
   totalPages: number;
   paginationItemsToDisplay?: number;
+  baseUrl: string; // Add baseUrl prop to customize the route
 };
 
 export default function TablePagination({
   currentPage,
   totalPages,
   paginationItemsToDisplay = 5,
+  baseUrl, // Accept baseUrl as a prop
 }: PaginationProps) {
   const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
     currentPage,
@@ -39,7 +41,11 @@ export default function TablePagination({
               }),
               "rounded-none shadow-none focus-visible:z-10 aria-disabled:pointer-events-none [&[aria-disabled]>svg]:opacity-50"
             )}
-            href={currentPage === 1 ? undefined : `#/page/${currentPage - 1}`}
+            href={
+              currentPage === 1
+                ? undefined
+                : `${baseUrl}?page=${currentPage - 1}`
+            }
             aria-label="Go to previous page"
             aria-disabled={currentPage === 1 ? true : undefined}
             role={currentPage === 1 ? "link" : undefined}
@@ -66,7 +72,7 @@ export default function TablePagination({
                 "rounded-none shadow-none focus-visible:z-10",
                 page === currentPage && "bg-accent"
               )}
-              href={`#/page/${page}`}
+              href={`${baseUrl}?page=${page}`} // Use the baseUrl and append the page query parameter
               isActive={page === currentPage}
             >
               {page}
@@ -100,7 +106,7 @@ export default function TablePagination({
             href={
               currentPage === totalPages
                 ? undefined
-                : `#/page/${currentPage + 1}`
+                : `${baseUrl}?page=${currentPage + 1}`
             }
             aria-label="Go to next page"
             aria-disabled={currentPage === totalPages ? true : undefined}

@@ -163,6 +163,11 @@
   }
 }
 
-.prose code {
-  @apply bg-transparent text-inherit p-0;
+@layer utilities {
+  .stat-card {
+    @apply bg-secondary;
+  }
+  .prose code {
+    @apply bg-transparent text-inherit p-0;
+  }
 }

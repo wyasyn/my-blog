@@ -20,10 +20,11 @@ export default async function BlogTable({
 }: {
   currentPage: number;
 }) {
-  const { blogPosts, pagination } = await getAllPostsAdmin(currentPage);
+  const { blogPosts, pagination } = await getAllPostsAdmin(currentPage, 4);
   if (!blogPosts || blogPosts.length === 0) {
     return <p>No Blog Posts found</p>;
   }
+
   return (
     <div>
       <div className="bg-background overflow-hidden rounded-md border mb-8">
@@ -63,10 +64,13 @@ export default async function BlogTable({
           </TableBody>
         </Table>
       </div>
-      <TablePagination
-        currentPage={currentPage}
-        totalPages={pagination.totalPages}
-      />
+      {pagination.totalPages > 1 && (
+        <TablePagination
+          currentPage={currentPage}
+          totalPages={pagination.totalPages}
+          baseUrl="/dashboard/blog"
+        />
+      )}
     </div>
   );
 }

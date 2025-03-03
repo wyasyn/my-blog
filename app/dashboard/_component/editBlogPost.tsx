@@ -20,7 +20,11 @@ interface EditBlogProps {
     title: string;
     content: string;
     slug: string;
-    imageId?: string;
+    thumbnail: {
+      imageUrl: string;
+      width?: number | null;
+      height?: number | null;
+    };
     tags: { id: string; name: string }[];
   };
 }
@@ -77,7 +81,7 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
       <h2 className="text-2xl font-bold mb-4">Edit Blog</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Title */}
-        <div>
+        <div className="space-y-3">
           <Label htmlFor="title" className="block font-medium">
             Title
           </Label>
@@ -89,7 +93,7 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
         </div>
 
         {/* Tags */}
-        <div>
+        <div className="space-y-3">
           <Label htmlFor="tags" className="block font-medium">
             Tags (comma-separated)
           </Label>
@@ -101,7 +105,7 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
         </div>
 
         {/* Description (Markdown Editor) */}
-        <div>
+        <div className="space-y-3">
           <Label htmlFor="body" className="block font-medium">
             Content
           </Label>
@@ -129,7 +133,7 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
         </div>
 
         {/* Image Upload */}
-        <div>
+        <div className="space-y-3">
           <Label htmlFor="image" className="block font-medium">
             Blog Image
           </Label>
@@ -144,20 +148,24 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
               src={imagePreview}
               alt="Preview"
               className="mt-2 w-32 h-32 object-cover rounded"
+              width={200}
+              height={200}
             />
           ) : (
-            blog.imageId && (
+            blog.thumbnail && (
               <Image
-                src={`/images/${blog.imageId}`} // Adjust URL based on your backend
+                src={blog.thumbnail.imageUrl} // Adjust URL based on your backend
                 alt="Current"
                 className="mt-2 w-32 h-32 object-cover rounded"
+                width={blog.thumbnail.width || 200}
+                height={blog.thumbnail.height || 200}
               />
             )
           )}
         </div>
 
         {/* Submit Button */}
-        <Button type="submit">
+        <Button type="submit" className="cursor-pointer">
           <Save className="w-4 h-4 mr-2" /> Save Changes
         </Button>
       </form>
