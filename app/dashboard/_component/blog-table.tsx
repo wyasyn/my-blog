@@ -1,3 +1,4 @@
+import { getAllPostsAdmin } from "@/app/_actions/blog-actions";
 import TablePagination from "@/components/pagination";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,32 +10,20 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { FilePenLine, Trash2 } from "lucide-react";
+import { FilePenLine } from "lucide-react";
+import Link from "next/link";
+import UnPublishButton from "./unPuiblish-blog";
+import PublishButton from "./Publish-blog";
 
-const programmingLanguages = [
-  {
-    id: "1",
-    title: "JavaScript",
-  },
-  {
-    id: "2",
-    title: "Python",
-  },
-  {
-    id: "3",
-    title: "Java",
-  },
-  {
-    id: "4",
-    title: "C++",
-  },
-  {
-    id: "5",
-    title: "Ruby",
-  },
-];
-
-export default function BlogTable() {
+export default async function BlogTable({
+  currentPage,
+}: {
+  currentPage: number;
+}) {
+  const { blogPosts, pagination } = await getAllPostsAdmin(currentPage);
+  if (!blogPosts || blogPosts.length === 0) {
+    return <p>No Blog Posts found</p>;
+  }
   return (
     <div>
       <div className="bg-background overflow-hidden rounded-md border mb-8">
@@ -46,10 +35,10 @@ export default function BlogTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {programmingLanguages.map((language) => (
-              <TableRow key={language.id}>
+            {blogPosts.map((post) => (
+              <TableRow key={post.id}>
                 <TableCell className="py-2 font-medium truncate">
-                  {language.title}
+                  {post.title}
                 </TableCell>
 
                 <TableCell className="py-2 flex items-center justify-center gap-4">
@@ -57,25 +46,27 @@ export default function BlogTable() {
                     variant="secondary"
                     size="icon"
                     className="cursor-pointer"
-                    title="Edit Project"
+                    title="Edit blog"
                   >
-                    <FilePenLine />
+                    <Link href={`/dashboard/blog/${post.id}`}>
+                      <FilePenLine />
+                    </Link>
                   </Button>
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    className="cursor-pointer"
-                    title="Delete project"
-                  >
-                    <Trash2 />
-                  </Button>
+                  {post.isPublished ? (
+                    <UnPublishButton blogId={post.id} />
+                  ) : (
+                    <PublishButton blogId={post.id} />
+                  )}
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
-      <TablePagination currentPage={2} totalPages={10} />
+      <TablePagination
+        currentPage={currentPage}
+        totalPages={pagination.totalPages}
+      />
     </div>
   );
 }
