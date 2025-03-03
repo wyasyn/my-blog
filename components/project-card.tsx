@@ -1,14 +1,46 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import placeholderImage from "@/lib/assets/images/placeholder.webp";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
-export default function ProjectCard({ index }: { index: number }) {
+interface ProjectProps {
+  id: string;
+  title: string;
+  thumbnail: ImageProps;
+  technologies: TechnologyProps[];
+  content: string;
+  slug: string;
+}
+
+interface ImageProps {
+  id: string;
+  title: string | null;
+  height: number | null;
+  width: number | null;
+  userId: string | null;
+  imageUrl: string;
+  description: string | null;
+  publicId: string;
+  tags: string[];
+  blurDataUrl: string | null;
+}
+
+interface TechnologyProps {
+  id: string;
+  name: string;
+}
+
+export default function ProjectCard({
+  index,
+  project,
+}: {
+  index: number;
+  project: ProjectProps;
+}) {
   return (
     <Link
-      href={`/projects/slug`}
+      href={`/projects/${project.slug}`}
       className={cn(
         "group hover:shadow-lg duration-300 transition-all",
         index % 2 === 0 ? "md:translate-y-[150px]" : "md:translate-y-0"
@@ -22,16 +54,18 @@ export default function ProjectCard({ index }: { index: number }) {
       >
         <div className=" w-full aspect-square md:aspect-video rounded-lg overflow-hidden">
           <Image
-            src={placeholderImage.src}
-            alt="product image"
-            width={placeholderImage.width}
-            height={placeholderImage.height}
+            src={project.thumbnail.imageUrl || "/placeholder-image.jpg"}
+            alt={project.title}
+            width={project.thumbnail.width || 400}
+            height={project.thumbnail.height || 400}
+            placeholder="blur"
+            blurDataURL={project.thumbnail.blurDataUrl || ""}
             className="w-full aspect-square md:aspect-video rounded-lg object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
         <div className="flex flex-col py-4">
-          <h3 className="mb-1 text-2xl capitalize">Project Title</h3>
-          <span className="">UX / UI design</span>
+          <h3 className="mb-1 text-2xl capitalize">{project.title}</h3>
+          <span className="">{project.technologies[0].name}</span>
         </div>
       </motion.div>
     </Link>

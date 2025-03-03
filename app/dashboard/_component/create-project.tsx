@@ -1,9 +1,11 @@
 "use client";
+import { createProject } from "@/app/_actions/project-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import matter from "gray-matter";
 import { CircleCheck, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -11,6 +13,7 @@ export default function CreateProject() {
   const [body, setBody] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
+  const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,7 +37,7 @@ export default function CreateProject() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!imageFile || !body) {
       toast.error("Please provide both an image and a markdown file.");
@@ -54,16 +57,14 @@ export default function CreateProject() {
       formData.append("description", content);
       formData.append("technologies", technologies);
 
-      console.log("Form Data Ready:", {
-        title,
-        content,
-        technologies,
-        imageFile,
-      });
+      const { error, success } = await createProject(formData);
 
-      toast.success(
-        "Project successfully prepared! (Replace console.log with API call)"
-      );
+      if (error) {
+        toast.error(error);
+      } else if (success) {
+        toast(success);
+        router.refresh();
+      }
     } catch {
       toast.error(
         "Error parsing markdown file. Ensure it has valid frontmatter."

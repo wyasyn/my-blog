@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Save } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import ReactMarkdown from "react-markdown";
@@ -35,6 +36,8 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
   const [preview, setPreview] = useState<boolean>(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  const router = useRouter();
+
   const description = watch("description");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,6 +56,7 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
 
     if (message) {
       toast(message);
+      router.refresh();
     } else if (error) {
       toast.error(error);
     }
