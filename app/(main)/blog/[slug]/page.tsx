@@ -1,35 +1,52 @@
-import matter from "gray-matter";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import CodeBlock from "@/components/code-block";
-import { sampleMarkdown } from "@/lib/data";
+
 import { Calendar, Clock } from "lucide-react";
 import { calculateReadingTime, formatDateString } from "@/lib/utils";
 import Link from "next/link";
+import { getBlogBySlug } from "@/app/_actions/blog-actions";
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import LoadingSkeleton from "@/components/loadingSkeleton";
+import RelatedBlog from "@/components/releatedBlog";
 
-export default async function SingleBlogPage() {
-  const { data, content } = matter(sampleMarkdown);
+type Params = {
+  params: Promise<{ slug: string }>;
+};
+export default async function SingleBlogPage({ params }: Params) {
+  const { slug } = await params;
+  const { blogPost } = await getBlogBySlug(slug);
+
+  if (!blogPost) notFound();
 
   return (
     <main>
       <header className="mb-12 md:mb-20">
-        <h1 className="text-balance">{data.title}</h1>
-        <p className="flex items-center gap-4 mb-3">
+        <h1 className="text-balance">{blogPost.title}</h1>
+        <p className="flex items-center gap-4 mb-3 text-sm">
           <span className="flex items-center gap-2">
-            <Clock /> {calculateReadingTime(content)} min
+            <Clock className="w-4 h-4" />{" "}
+            {calculateReadingTime(blogPost.content)} min
           </span>{" "}
           |{" "}
           <span className="flex items-center gap-2">
-            <Calendar /> {formatDateString(data.date)}
+            <Calendar className="w-4 h-4" />
+            {formatDateString(blogPost.publishedAt?.toISOString() || "")}
           </span>
         </p>
         <div className=" my-4 flex items-center gap-4 flex-wrap">
-          <Link
-            href={`/technology/slug`}
-            className="bg-secondary py-2 px-3 rounded-2xl border text-xs w-fit hover:text-foreground duration-300"
-          >
-            ML Model Development
-          </Link>
+          {blogPost.tags &&
+            blogPost.tags.length > 0 &&
+            blogPost.tags.map((tag) => (
+              <Link
+                key={tag.id}
+                href={`/tag/${tag.slug}`}
+                className="bg-secondary py-2 px-3 shrink-0 rounded-2xl border text-xs hover:text-foreground duration-300"
+              >
+                {tag.name}
+              </Link>
+            ))}
         </div>
       </header>
 
@@ -55,16 +72,22 @@ export default async function SingleBlogPage() {
                   language={match?.[1] || "plaintext"}
                 />
               ) : (
-                <code className={className} {...props}>
+                <code
+                  className="px-1 py-0.5 rounded bg-muted text-primary text-sm"
+                  {...props}
+                >
                   {children}
                 </code>
               );
             },
           }}
         >
-          {content}
+          {blogPost.content}
         </ReactMarkdown>
       </div>
+      <Suspense fallback={<LoadingSkeleton />}>
+        <RelatedBlog slug={blogPost.slug} />
+      </Suspense>
     </main>
   );
 }

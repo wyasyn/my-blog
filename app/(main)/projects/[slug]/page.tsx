@@ -21,13 +21,15 @@ export default async function SingleProjectPage({ params }: Params) {
     <main>
       <header className="mb-12 md:mb-20">
         <h1 className="text-balance">{project.title}</h1>
-        <p className="flex items-center gap-4 mb-3">
+        <p className="flex items-center gap-4 mb-3 text-sm">
           <span className="flex items-center gap-2">
-            <Clock /> {calculateReadingTime(project.content)} min
+            <Clock className="w-4 h-4" />{" "}
+            {calculateReadingTime(project.content)} min
           </span>{" "}
           |{" "}
           <span className="flex items-center gap-2">
-            <Calendar /> {formatDateString(project.createdAt.toISOString())}
+            <Calendar className="w-4 h-4" />{" "}
+            {formatDateString(project.createdAt.toISOString())}
           </span>
         </p>
         <div className=" my-4 flex items-center gap-4 flex-wrap">
@@ -65,7 +67,10 @@ export default async function SingleProjectPage({ params }: Params) {
                   language={match?.[1] || "plaintext"}
                 />
               ) : (
-                <code className={className} {...props}>
+                <code
+                  className="px-1 py-0.5 rounded bg-muted text-primary text-sm"
+                  {...props}
+                >
                   {children}
                 </code>
               );

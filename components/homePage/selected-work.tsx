@@ -5,7 +5,11 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import LoadingSkeleton from "../loadingSkeleton";
 
-export default function SelectedWork({ currentPage }: { currentPage: number }) {
+export default function SelectedWork({
+  currentPage = 1,
+}: {
+  currentPage?: number;
+}) {
   return (
     <section className="my-14 md:my-32">
       <SectionTitle subtitle="explore recent projects" title="selected works" />

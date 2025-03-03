@@ -23,7 +23,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   };
 
   return (
-    <code className="relative mt-8 block ">
+    <span className="relative mt-8 block ">
       {/* Language Label */}
       <span className="absolute -top-8 left-0 bg-accent text-muted-foreground text-xs px-2 py-1 rounded">
         {language}
@@ -53,7 +53,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
       >
         {code}
       </SyntaxHighlighter>
-    </code>
+    </span>
   );
 };
 

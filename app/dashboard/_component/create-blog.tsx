@@ -13,6 +13,7 @@ export default function CreateBlog() {
   const [body, setBody] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +46,7 @@ export default function CreateBlog() {
     }
 
     try {
+      setLoading(true);
       const { data, content } = matter(body);
       const title = data.title || "Untitled";
       const tags = Array.isArray(data.tags) ? data.tags.join(",") : "";
@@ -70,6 +72,8 @@ export default function CreateBlog() {
       toast.error(
         "Error parsing markdown file. Ensure it has valid frontmatter."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -116,8 +120,12 @@ export default function CreateBlog() {
         />
       </div>
       <div className="flex gap-3 mt-4">
-        <Button type="submit" size="sm">
-          Create blog
+        <Button
+          type="submit"
+          size="sm"
+          disabled={loading || !body || !imageFile}
+        >
+          {loading ? "Creating..." : "Create Blog"}
         </Button>
         <Button
           type="button"

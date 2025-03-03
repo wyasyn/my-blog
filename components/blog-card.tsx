@@ -2,13 +2,33 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import clockImage from "@/lib/assets/images/blog.gif";
-import { cn } from "@/lib/utils";
+import { cn, formatDateString } from "@/lib/utils";
 
-export default function BlogCard({ index }: { index: number }) {
+interface PostProps {
+  id: string;
+  title: string;
+  content: string;
+  slug: string;
+  publishedAt: Date | null;
+  thumbnail: {
+    imageUrl: string;
+    width?: number | null;
+    height?: number | null;
+    blurDataUrl: string | null;
+  };
+  tags: { id: string; name: string }[];
+}
+
+export default function BlogCard({
+  index,
+  post,
+}: {
+  index: number;
+  post: PostProps;
+}) {
   return (
     <Link
-      href={`/blog/slug`}
+      href={`/blog/${post.slug}`}
       className={cn(
         "group hover:shadow-lg duration-300 transition-all",
         index % 2 === 0 ? "md:translate-y-[150px]" : "md:translate-y-0"
@@ -22,20 +42,20 @@ export default function BlogCard({ index }: { index: number }) {
       >
         <div className=" w-full aspect-square md:aspect-video rounded-lg overflow-hidden">
           <Image
-            src={clockImage.src}
-            alt="product image"
-            width={clockImage.width}
-            height={clockImage.height}
-            unoptimized
+            src={post.thumbnail.imageUrl || "/placeholder-image.jpg"}
+            alt={post.title}
+            width={post.thumbnail.width || 400}
+            height={post.thumbnail.height || 400}
+            placeholder="blur"
+            blurDataURL={post.thumbnail.blurDataUrl || ""}
             className="w-full aspect-square md:aspect-video rounded-lg object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
         <div className="flex flex-col py-4">
-          <h3 className="mb-1 text-xl capitalize">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Adipisci
-            reprehenderit dolorum facere inventore
-          </h3>
-          <span className="">February 18, 2025</span>
+          <h3 className="mb-1 text-xl capitalize">{post.title}</h3>
+          <span className="">
+            {formatDateString(post.publishedAt?.toISOString() || "")}
+          </span>
         </div>
       </motion.div>
     </Link>

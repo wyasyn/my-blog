@@ -13,6 +13,7 @@ export default function CreateProject() {
   const [body, setBody] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +46,7 @@ export default function CreateProject() {
     }
 
     try {
+      setLoading(true);
       const { data, content } = matter(body);
       const title = data.title || "Untitled";
       const technologies = Array.isArray(data.technologies)
@@ -63,12 +65,18 @@ export default function CreateProject() {
         toast.error(error);
       } else if (success) {
         toast(success);
+        setBody("");
+        setImageFile(null);
+        setFileName("");
+
         router.refresh();
       }
     } catch {
       toast.error(
         "Error parsing markdown file. Ensure it has valid frontmatter."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -115,8 +123,12 @@ export default function CreateProject() {
         />
       </div>
       <div className="flex gap-3 mt-4">
-        <Button type="submit" size="sm">
-          Create Project
+        <Button
+          type="submit"
+          size="sm"
+          disabled={loading || !body || !imageFile}
+        >
+          {loading ? "Creating..." : "Create Project"}
         </Button>
         <Button
           type="button"
