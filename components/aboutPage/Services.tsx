@@ -11,7 +11,7 @@ import {
 
 export default function Services() {
   return (
-    <section className="mb-12">
+    <section className="my-14 md:my-20">
       <SectionTitle title="What can I do for you?" subtitle="fields of work" />
       <div className=" px-8">
         <Carousel>

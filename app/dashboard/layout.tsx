@@ -12,7 +12,7 @@ export default async function Layout({
   const session = await auth();
 
   if (session?.user === undefined) {
-    redirect("/login"); // Don't return redirect()
+    redirect("/login");
   }
 
   if (!allowedEmail) {

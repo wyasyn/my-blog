@@ -38,7 +38,7 @@ const AdminDashboard = async () => {
       {/* Recent Projects */}
       <div className="recent-projects mt-6">
         <h2 className="text-xl font-semibold mb-4">Recent Projects</h2>
-        <ul className="space-y-4">
+        <ul className="space-y-4 grid sm:grid-cols-2">
           {projects && projects.length > 0 ? (
             projects.map((project) => (
               <li key={project.id} className="flex flex-col gap-1">
@@ -59,7 +59,7 @@ const AdminDashboard = async () => {
       {/* Recent Blog Posts */}
       <div className="recent-blog-posts mt-6">
         <h2 className="text-xl font-semibold mb-3">Recent Blog Posts</h2>
-        <ul className="space-y-4">
+        <ul className="space-y-4 grid sm:grid-cols-2">
           {blogPosts && blogPosts.length > 0 ? (
             blogPosts.map((blogPost) => (
               <li key={blogPost.id} className="flex flex-col gap-1">

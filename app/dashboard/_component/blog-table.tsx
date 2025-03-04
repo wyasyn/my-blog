@@ -20,7 +20,7 @@ export default async function BlogTable({
 }: {
   currentPage: number;
 }) {
-  const { blogPosts, pagination } = await getAllPostsAdmin(currentPage, 4);
+  const { blogPosts, pagination } = await getAllPostsAdmin(currentPage);
   if (!blogPosts || blogPosts.length === 0) {
     return <p>No Blog Posts found</p>;
   }

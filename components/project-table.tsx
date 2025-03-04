@@ -18,7 +18,7 @@ export default async function ProjectTable({
 }: {
   currentPage: number;
 }) {
-  const { projects, pagination } = await getPaginatedProjects(currentPage);
+  const { projects, pagination } = await getPaginatedProjects(currentPage, 10);
   if (!projects || projects.length === 0) {
     return <p>No Projects found</p>;
   }
