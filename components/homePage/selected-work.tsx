@@ -14,7 +14,7 @@ export default function SelectedWork({
     <section className="my-14 md:my-32">
       <SectionTitle subtitle="explore recent projects" title="selected works" />
       <Suspense fallback={<LoadingSkeleton />}>
-        <HomeProjects currentPage={currentPage} />
+        <HomeProjects currentPage={currentPage} showPagination={undefined} />
       </Suspense>
       <Button variant="link" size="sm" className="mt-8">
         <Link href="/projects">View all projects</Link>

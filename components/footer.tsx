@@ -7,9 +7,17 @@ const Footer = () => {
   return (
     <footer className=" py-6 w-full bg-secondary border-t rounded-[0_5rem_0_0]">
       <div className="wrapper px-0 flex flex-col md:flex-row justify-between items-center">
-        <p className="text-sm">
-          &copy; {new Date().getFullYear()} Yasin Walum. All rights reserved.
-        </p>
+        <div>
+          <p className="text-sm">
+            &copy; {new Date().getFullYear()} Yasin Walum. All rights reserved.
+          </p>
+          <Link
+            className="text-xs underline hover:text-foreground duration-300"
+            href={"/privacy-policy"}
+          >
+            Privacy Policy
+          </Link>
+        </div>
 
         <nav className="flex space-x-4 mt-4 md:mt-0 flex-wrap">
           {navData.map((item, index) => {

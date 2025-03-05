@@ -1,4 +1,7 @@
-import { getProjectBySlug } from "@/app/_actions/project-actions";
+import {
+  getPaginatedProjects,
+  getProjectBySlug,
+} from "@/app/_actions/project-actions";
 import { calculateReadingTime, formatDateString } from "@/lib/utils";
 import { Calendar, Clock } from "lucide-react";
 import Link from "next/link";
@@ -9,14 +12,64 @@ import CodeBlock from "@/components/code-block";
 import RelatedProjects from "@/components/relatedProjects";
 import { Suspense } from "react";
 import LoadingSkeleton from "@/components/loadingSkeleton";
+import { Metadata } from "next";
+import { Article, WithContext } from "schema-dts";
+
+export async function generateStaticParams() {
+  const { projects } = await getPaginatedProjects();
+
+  if (!projects) return;
+
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
+}
 
 type Params = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  const { slug } = await params;
+  const { project } = await getProjectBySlug(slug);
+
+  return {
+    title: project?.title,
+    openGraph: {
+      title: project?.title,
+      images: [{ url: project?.thumbnail.imageUrl || "" }],
+    },
+  };
+}
+
 export default async function SingleProjectPage({ params }: Params) {
   const { slug } = await params;
   const { project } = await getProjectBySlug(slug);
   if (!project) notFound();
+
+  const jsonLd: WithContext<Article> = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: project?.title,
+    image: project?.thumbnail ? [project.thumbnail.imageUrl] : [],
+    datePublished: project?.createdAt
+      ? new Date(project.createdAt).toISOString()
+      : "",
+    dateModified: project?.createdAt
+      ? new Date(project.createdAt).toISOString()
+      : "",
+    author: [
+      {
+        "@type": "Person",
+        name: "Yasin Walum",
+        url: "https://ywalum.com",
+        sameAs: [
+          "https://github.com/wyasyn",
+          "https://www.linkedin.com/in/yasin-walum",
+        ],
+      },
+    ],
+  };
   return (
     <main>
       <header className="mb-12 md:mb-20">
@@ -46,7 +99,7 @@ export default async function SingleProjectPage({ params }: Params) {
             ))}
         </div>
       </header>
-      <section className="prose dark:prose-invert prose-pre:bg-transparent prose-pre:p-0">
+      <section className="prose dark:prose-invert prose-pre:bg-transparent prose-pre:p-0 prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-muted-foreground prose-h3:text-muted-foreground">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
@@ -83,6 +136,10 @@ export default async function SingleProjectPage({ params }: Params) {
       <Suspense fallback={<LoadingSkeleton />}>
         <RelatedProjects slug={project.slug} />
       </Suspense>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     </main>
   );
 }

@@ -1,6 +1,11 @@
 import ProjectTable from "@/components/project-table";
 import AddProject from "../_component/add-project-btn";
 import { Suspense } from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Project ",
+};
 
 type SearchParams = {
   searchParams: Promise<{ page: string }>;

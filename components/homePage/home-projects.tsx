@@ -7,7 +7,7 @@ export default async function HomeProjects({
   showPagination = false,
 }: {
   currentPage: number;
-  showPagination?: boolean;
+  showPagination: boolean | undefined;
 }) {
   const { projects, pagination } = await getPaginatedProjects(currentPage);
   if (!projects || projects.length === 0) {

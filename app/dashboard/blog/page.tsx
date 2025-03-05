@@ -2,6 +2,11 @@ import { Suspense } from "react";
 import AddBlog from "../_component/add-blog";
 import BlogTable from "../_component/blog-table";
 import LoadingSkeleton from "@/components/loadingSkeleton";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard - blog ",
+};
 
 type SearchParams = {
   searchParams: Promise<{ page: string }>;

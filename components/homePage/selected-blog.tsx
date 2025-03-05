@@ -7,7 +7,7 @@ export default async function SelectedBlog({
   showPagination = false,
 }: {
   currentPage: number;
-  showPagination?: boolean;
+  showPagination: boolean | undefined;
 }) {
   const { blogPosts, pagination } = await getPaginatedBlog(currentPage);
   if (!blogPosts || blogPosts.length === 0) {

@@ -1,7 +1,13 @@
 import HomeProjects from "@/components/homePage/home-projects";
 import LoadingSkeleton from "@/components/loadingSkeleton";
 import PageTitle from "@/components/page-title";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Projects",
+};
+
 type SearchParams = {
   searchParams: Promise<{ page: string }>;
 };

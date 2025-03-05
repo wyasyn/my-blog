@@ -17,7 +17,7 @@ export default function HomeBlog({
         title="from the blog"
       />
       <Suspense fallback={<LoadingSkeleton />}>
-        <SelectedBlog currentPage={currentPage} />
+        <SelectedBlog currentPage={currentPage} showPagination={undefined} />
       </Suspense>
       <Button variant="link" size="sm" className="mt-8">
         <Link href="/blog">View all posts</Link>

@@ -1,8 +1,13 @@
 import SelectedBlog from "@/components/homePage/selected-blog";
 import PageTitle from "@/components/page-title";
+import { Metadata } from "next";
 
 type SearchParams = {
   searchParams: Promise<{ page: string }>;
+};
+
+export const metadata: Metadata = {
+  title: "Blog post ",
 };
 
 export default async function BlogPage({ searchParams }: SearchParams) {
