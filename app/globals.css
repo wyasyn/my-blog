@@ -155,9 +155,6 @@
 }
 
 @layer components {
-  .inline-code {
-    @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold;
-  }
   .wrapper {
     @apply max-w-5xl mx-auto p-3 lg:p-8 w-full;
   }
@@ -166,8 +163,5 @@
 @layer utilities {
   .stat-card {
     @apply bg-secondary;
-  }
-  .prose code {
-    @apply bg-transparent text-inherit p-0;
   }
 }

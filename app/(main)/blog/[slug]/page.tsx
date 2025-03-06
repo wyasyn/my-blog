@@ -13,6 +13,7 @@ import LoadingSkeleton from "@/components/loadingSkeleton";
 import RelatedBlog from "@/components/releatedBlog";
 import { Metadata } from "next";
 import { socials } from "@/components/homePage/hero";
+import { InlineCode } from "@/components/inline-code";
 
 type Params = {
   params: Promise<{ slug: string }>;
@@ -99,7 +100,7 @@ export default async function SingleBlogPage({ params }: Params) {
       </header>
 
       {/* Markdown Renderer with Custom Code Block */}
-      <div className="prose dark:prose-invert prose-pre:bg-transparent prose-pre:p-0 prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-muted-foreground prose-h3:text-muted-foreground">
+      <section className="prose dark:prose-invert prose-pre:bg-transparent prose-pre:p-0 prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-muted-foreground prose-h3:text-muted-foreground mx-auto">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
@@ -107,32 +108,33 @@ export default async function SingleBlogPage({ params }: Params) {
               inline,
               className,
               children,
-              ...props
             }: {
               inline?: boolean;
               className?: string;
               children?: React.ReactNode;
             }) {
+              // Extract language from className if it exists
               const match = /language-(\w+)/.exec(className || "");
-              return !inline ? (
-                <CodeBlock
-                  code={String(children).trim()}
-                  language={match?.[1] || "plaintext"}
-                />
-              ) : (
-                <code
-                  className="px-1 py-0.5 rounded bg-muted text-primary text-sm"
-                  {...props}
-                >
-                  {children}
-                </code>
-              );
+              const language = match?.[1] || "plaintext";
+
+              // If it's a code block (not inline), use the CodeBlock component
+              if (!inline) {
+                return (
+                  <CodeBlock
+                    code={String(children).trim()}
+                    language={language}
+                  />
+                );
+              }
+              // For inline code, use a plain code tag with no additional styles
+              return <InlineCode code={String(children).trim()} />;
             },
           }}
         >
           {blogPost.content}
         </ReactMarkdown>
-      </div>
+      </section>
+
       <Suspense fallback={<LoadingSkeleton />}>
         <RelatedBlog slug={blogPost.slug} />
       </Suspense>

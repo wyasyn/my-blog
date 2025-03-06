@@ -23,20 +23,20 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
   };
 
   return (
-    <span className="relative mt-8 block ">
+    <span className="relative pt-9 block code-block">
       {/* Language Label */}
-      <span className="absolute -top-8 left-0 bg-accent text-muted-foreground text-xs px-2 py-1 rounded">
+      <span className="absolute top-2 left-0 bg-secondary text-muted-foreground text-xs px-2 py-1 rounded">
         {language}
       </span>
 
       {/* Copy Button */}
       <button
-        className="absolute top-2 right-2 p-1 text-xs rounded hover:scale-110 text-muted-foreground transition-all duration-300 cursor-pointer"
+        type="button"
+        className="absolute top-2 right-0 p-1 text-xs rounded hover:bg-secondary text-muted-foreground transition"
         onClick={handleCopy}
         aria-label="Copy code"
         aria-describedby="copied-message"
         title="Copy code"
-        type="button"
       >
         {copied ? (
           <Check className="w-4 h-4 text-emerald-500" />

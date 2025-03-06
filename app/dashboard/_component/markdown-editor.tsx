@@ -25,6 +25,8 @@ import {
   Minimize2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import CodeBlock from "@/components/code-block";
+import { InlineCode } from "@/components/inline-code";
 
 interface MarkdownEditorProps {
   value: string;
@@ -215,14 +217,45 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
         </TabsContent>
         <TabsContent
           value="preview"
-          className="p-4 m-0 prose dark:prose-invert max-w-none overflow-auto"
+          className="p-4 m-0 prose dark:prose-invert max-w-none overflow-auto prose-pre:bg-transparent prose-pre:p-0"
           style={{
             height: isFullscreen ? "calc(100vh - 120px)" : `${rows * 1.5}rem`,
             minHeight: "300px",
           }}
         >
           {value ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{value}</ReactMarkdown>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                code({
+                  inline,
+                  className,
+                  children,
+                }: {
+                  inline?: boolean;
+                  className?: string;
+                  children?: React.ReactNode;
+                }) {
+                  // Extract language from className if it exists
+                  const match = /language-(\w+)/.exec(className || "");
+                  const language = match?.[1] || "plaintext";
+
+                  // If it's a code block (not inline), use the CodeBlock component
+                  if (!inline) {
+                    return (
+                      <CodeBlock
+                        code={String(children).trim()}
+                        language={language}
+                      />
+                    );
+                  }
+                  // For inline code, use a plain code tag with no additional styles
+                  return <InlineCode code={String(children).trim()} />;
+                },
+              }}
+            >
+              {value}
+            </ReactMarkdown>
           ) : (
             <p className="text-muted-foreground">Nothing to preview</p>
           )}
