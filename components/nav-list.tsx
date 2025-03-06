@@ -1,7 +1,12 @@
-import { Briefcase, Mail, Newspaper, User } from "lucide-react";
+import { Briefcase, Home, Mail, Newspaper, User } from "lucide-react";
 import NavItem from "./nav-item";
 
 export const navData = [
+  {
+    title: "Home",
+    href: "/",
+    icon: <Home size={32} />,
+  },
   {
     title: "About",
     href: "/about",

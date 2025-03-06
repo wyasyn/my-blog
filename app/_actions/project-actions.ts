@@ -213,54 +213,6 @@ export const getProjectById = cache(async (id: string) => {
   }
 });
 
-export const searchProjects = cache(
-  async (query: string, page = 1, pageSize = 4) => {
-    if (!query.trim()) return { error: "Search query cannot be empty" };
-
-    const skip = (page - 1) * pageSize;
-
-    try {
-      const [projects, total] = await prisma.$transaction([
-        prisma.project.findMany({
-          where: {
-            OR: [
-              { title: { contains: query, mode: "insensitive" } },
-              { description: { contains: query, mode: "insensitive" } },
-              { technologies: { some: { name: query } } },
-              { content: { contains: query, mode: "insensitive" } },
-            ],
-          },
-          skip,
-          take: pageSize,
-          orderBy: { createdAt: "desc" },
-          include: { technologies: true },
-        }),
-        prisma.project.count({
-          where: {
-            OR: [
-              { title: { contains: query, mode: "insensitive" } },
-              { content: { contains: query, mode: "insensitive" } },
-              { technologies: { some: { name: query } } },
-              { description: { contains: query, mode: "insensitive" } },
-            ],
-          },
-        }),
-      ]);
-
-      return {
-        projects,
-        pagination: {
-          currentPage: page,
-          totalPages: Math.ceil(total / pageSize),
-          total,
-        },
-      };
-    } catch (error) {
-      console.error("Error searching projects:", error);
-      return { error: "An error occurred while searching for projects" };
-    }
-  }
-);
 export const getProjectsByTechnology = cache(
   async (technologyName: string, page = 1, pageSize = 4) => {
     const skip = (page - 1) * pageSize;

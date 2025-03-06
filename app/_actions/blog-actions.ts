@@ -215,64 +215,6 @@ export const getPublishedBlogById = cache(async (id: string) => {
   }
 });
 
-export const searchBlog = cache(
-  async (query: string, page = 1, pageSize = 4) => {
-    if (!query.trim()) return { error: "Search query cannot be empty" };
-
-    const MAX_PAGE_SIZE = 20; // Prevent excessive queries
-    const validPage = Math.max(1, page);
-    const validPageSize = Math.min(Math.max(1, pageSize), MAX_PAGE_SIZE);
-    const skip = (validPage - 1) * validPageSize;
-
-    try {
-      const [blogPosts, total] = await prisma.$transaction([
-        prisma.blogPost.findMany({
-          where: {
-            isPublished: true,
-            OR: [
-              { title: { contains: query, mode: "insensitive" } },
-              { description: { contains: query, mode: "insensitive" } },
-              {
-                content: { contains: query, mode: "insensitive" },
-                tags: { some: { name: query } },
-              },
-            ],
-          },
-          skip,
-          take: validPageSize,
-          orderBy: { publishedAt: "desc" },
-          include: { tags: true, thumbnail: true }, // Include thumbnail
-        }),
-        prisma.blogPost.count({
-          where: {
-            isPublished: true,
-            OR: [
-              { title: { contains: query, mode: "insensitive" } },
-              { description: { contains: query, mode: "insensitive" } },
-              {
-                content: { contains: query, mode: "insensitive" },
-                tags: { some: { name: query } },
-              },
-            ],
-          },
-        }),
-      ]);
-
-      return {
-        blogPosts, // Updated variable name
-        pagination: {
-          currentPage: validPage,
-          totalPages: Math.ceil(total / validPageSize),
-          total,
-        },
-      };
-    } catch (error) {
-      console.error("Error searching blog:", error);
-      return { error: "An error occurred while searching for blog posts." };
-    }
-  }
-);
-
 export const getBlogByTag = cache(
   async (tagName: string, page = 1, pageSize = 4) => {
     const skip = (page - 1) * pageSize;

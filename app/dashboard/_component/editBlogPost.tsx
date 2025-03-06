@@ -140,6 +140,7 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
           ) : (
             <Textarea
               id="body"
+              rows={20}
               {...register("content")}
               className="w-full p-2 border rounded h-32"
             />
