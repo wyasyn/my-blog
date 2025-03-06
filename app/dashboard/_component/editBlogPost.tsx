@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 import { editBlog } from "@/app/_actions/blog-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,9 +12,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
+import MarkdownEditor from "./markdown-editor";
 
 interface EditBlogProps {
   blog: {
@@ -41,12 +42,8 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
     },
   });
 
-  const [preview, setPreview] = useState<boolean>(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-
   const router = useRouter();
-
-  const content = watch("content");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
@@ -79,12 +76,16 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
     }
   };
 
+  const handleContentChange = (value: string) => {
+    setValue("content", value);
+  };
+
   return (
-    <div className="max-w-3xl mx-auto p-6 shadow-md rounded-lg">
+    <div className="max-w-4xl mx-auto p-6 shadow-md rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Edit Blog</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Title */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Label htmlFor="title" className="block font-medium">
             Title
           </Label>
@@ -94,8 +95,9 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
             className="w-full p-2 border rounded"
           />
         </div>
+
         {/* Description */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Label htmlFor="description" className="block font-medium">
             Description
           </Label>
@@ -107,7 +109,7 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
         </div>
 
         {/* Tags */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Label htmlFor="tags" className="block font-medium">
             Tags (comma-separated)
           </Label>
@@ -118,37 +120,20 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
           />
         </div>
 
-        {/* Description (Markdown Editor) */}
-        <div className="space-y-3">
-          <Label htmlFor="body" className="block font-medium">
+        {/* Content (Markdown Editor) */}
+        <div className="space-y-2">
+          <Label htmlFor="content" className="block font-medium">
             Content
           </Label>
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => setPreview(!preview)}
-          >
-            {preview ? "Edit" : "Preview"}
-          </Button>
-
-          {preview ? (
-            <div className="prose dark:prose-invert">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {content}
-              </ReactMarkdown>
-            </div>
-          ) : (
-            <Textarea
-              id="body"
-              rows={20}
-              {...register("content")}
-              className="w-full p-2 border rounded h-32"
-            />
-          )}
+          <MarkdownEditor
+            value={watch("content")}
+            onChange={handleContentChange}
+            rows={20}
+          />
         </div>
 
         {/* Image Upload */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <Label htmlFor="image" className="block font-medium">
             Blog Image
           </Label>
@@ -160,7 +145,7 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
           />
           {imagePreview ? (
             <Image
-              src={imagePreview}
+              src={imagePreview || "/placeholder.svg"}
               alt="Preview"
               className="mt-2 w-32 h-32 object-cover rounded"
               width={200}
@@ -169,7 +154,7 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
           ) : (
             blog.thumbnail && (
               <Image
-                src={blog.thumbnail.imageUrl} // Adjust URL based on your backend
+                src={blog.thumbnail.imageUrl || "/placeholder.svg"}
                 alt="Current"
                 className="mt-2 w-32 h-32 object-cover rounded"
                 width={blog.thumbnail.width || 200}

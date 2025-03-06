@@ -3,15 +3,13 @@ import { editProject } from "@/app/_actions/project-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Save } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
+import MarkdownEditor from "./markdown-editor";
 
 interface EditProjectProps {
   project: {
@@ -39,12 +37,9 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
     },
   });
 
-  const [preview, setPreview] = useState<boolean>(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const router = useRouter();
-
-  const content = watch("content");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
@@ -76,6 +71,10 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
       setValue("imageFile", file);
       setImagePreview(URL.createObjectURL(file));
     }
+  };
+
+  const handleContentChange = (value: string) => {
+    setValue("content", value);
   };
 
   return (
@@ -118,32 +117,15 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
         </div>
 
         {/* Content (Markdown Editor) */}
-        <div className="space-y-3">
-          <Label htmlFor="body" className="block font-medium">
+        <div className="space-y-2">
+          <Label htmlFor="content" className="block font-medium">
             Content
           </Label>
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => setPreview(!preview)}
-          >
-            {preview ? "Edit" : "Preview"}
-          </Button>
-
-          {preview ? (
-            <div className="prose dark:prose-invert">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {content}
-              </ReactMarkdown>
-            </div>
-          ) : (
-            <Textarea
-              id="body"
-              rows={20}
-              {...register("content")}
-              className="w-full p-2 border rounded h-32"
-            />
-          )}
+          <MarkdownEditor
+            value={watch("content")}
+            onChange={handleContentChange}
+            rows={20}
+          />
         </div>
 
         {/* Image Upload */}

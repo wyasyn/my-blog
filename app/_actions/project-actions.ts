@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { makeSlug } from "@/lib/utils";
 import { deleteImage, uploadImage } from "./image-actions";
 import { cache } from "react";
+import { revalidatePath } from "next/cache";
 
 export const createProject = async (formData: FormData) => {
   const imageFile = formData.get("imageFile") as File | null;
@@ -189,6 +190,11 @@ export const editProject = async (formData: FormData) => {
       where: { id },
       data: updatedData,
     });
+
+    revalidatePath(`/projects/${slug}`);
+    revalidatePath("/dashboard/projects");
+    revalidatePath("/projects");
+    revalidatePath("/");
 
     return { message: "Project updated successfully", updatedProject };
   } catch (error) {

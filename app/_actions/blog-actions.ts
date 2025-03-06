@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { makeSlug } from "@/lib/utils";
 import { deleteImage, uploadImage } from "./image-actions";
 import { cache } from "react";
+import { revalidatePath } from "next/cache";
 
 export const createBlog = async (formData: FormData) => {
   const imageFile = formData.get("imageFile") as File | null;
@@ -191,6 +192,11 @@ export const editBlog = async (formData: FormData) => {
       where: { id },
       data: updatedData,
     });
+
+    revalidatePath(`/blog/${slug}`);
+    revalidatePath("/dashboard/blog");
+    revalidatePath("/blog");
+    revalidatePath("/");
 
     return { message: "Blog updated successfully", updatedBlog };
   } catch (error) {

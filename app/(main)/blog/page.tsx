@@ -1,6 +1,8 @@
 import SelectedBlog from "@/components/homePage/selected-blog";
+import LoadingSkeleton from "@/components/loadingSkeleton";
 import PageTitle from "@/components/page-title";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 type SearchParams = {
   searchParams: Promise<{ page: string }>;
@@ -16,7 +18,9 @@ export default async function BlogPage({ searchParams }: SearchParams) {
   return (
     <>
       <PageTitle subtitle="thoughts, ideas & stories" title="from the blog" />
-      <SelectedBlog currentPage={currentPage} showPagination />
+      <Suspense fallback={<LoadingSkeleton />}>
+        <SelectedBlog currentPage={currentPage} showPagination />
+      </Suspense>
     </>
   );
 }
