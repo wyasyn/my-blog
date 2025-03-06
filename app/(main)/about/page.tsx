@@ -5,7 +5,7 @@ import personalPic from "@/lib/assets/images/hero.jpg";
 import { socials } from "@/components/homePage/hero";
 import { Person, WithContext } from "schema-dts";
 
-// TODO: Install "schema-dts"
+// TODO: add tags and technology pages
 
 export const metadata: Metadata = {
   title: "About Me ",

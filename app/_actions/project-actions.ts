@@ -9,10 +9,11 @@ export const createProject = async (formData: FormData) => {
   const imageFile = formData.get("imageFile") as File | null;
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
+  const content = formData.get("content") as string;
   const technologies = formData.get("technologies") as string;
 
   if (!imageFile) return { error: "No file uploaded" };
-  if (!title || !description || !technologies)
+  if (!title || !description || !technologies || !content)
     return { error: "All fields are required" };
 
   try {
@@ -39,7 +40,8 @@ export const createProject = async (formData: FormData) => {
     const project = await prisma.project.create({
       data: {
         title,
-        content: description,
+        description,
+        content,
         imageId,
         slug,
         technologies: {
@@ -133,6 +135,7 @@ export const editProject = async (formData: FormData) => {
   const id = formData.get("id") as string;
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
+  const content = formData.get("content") as string;
   const technologies = formData.get("technologies") as string;
 
   try {
@@ -174,7 +177,8 @@ export const editProject = async (formData: FormData) => {
     // Dynamically construct updatedData object
     const updatedData = {
       ...(title && { title }),
-      ...(description && { content: description }),
+      ...(description && { description }),
+      ...(content && { content }),
       ...(newImageId && { imageId: newImageId }),
       ...(slug && { slug }),
       ...(technologyData && { technologies: technologyData }),
@@ -221,6 +225,8 @@ export const searchProjects = cache(
           where: {
             OR: [
               { title: { contains: query, mode: "insensitive" } },
+              { description: { contains: query, mode: "insensitive" } },
+              { technologies: { some: { name: query } } },
               { content: { contains: query, mode: "insensitive" } },
             ],
           },
@@ -234,6 +240,8 @@ export const searchProjects = cache(
             OR: [
               { title: { contains: query, mode: "insensitive" } },
               { content: { contains: query, mode: "insensitive" } },
+              { technologies: { some: { name: query } } },
+              { description: { contains: query, mode: "insensitive" } },
             ],
           },
         }),

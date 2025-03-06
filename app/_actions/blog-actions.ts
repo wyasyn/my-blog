@@ -8,6 +8,7 @@ import { cache } from "react";
 export const createBlog = async (formData: FormData) => {
   const imageFile = formData.get("imageFile") as File | null;
   const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
   const content = formData.get("content") as string;
   const tags = formData.get("tags") as string;
 
@@ -39,6 +40,7 @@ export const createBlog = async (formData: FormData) => {
       data: {
         title,
         content,
+        description,
         imageId,
         slug,
         tags: {
@@ -134,6 +136,7 @@ export const editBlog = async (formData: FormData) => {
   const imageFile = formData.get("imageFile") as File | null;
   const id = formData.get("id") as string;
   const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
   const content = formData.get("content") as string;
   const tags = formData.get("tags") as string;
 
@@ -176,6 +179,7 @@ export const editBlog = async (formData: FormData) => {
     // Dynamically construct updatedData object
     const updatedData = {
       ...(title && { title }),
+      ...(description && { description }),
       ...(content && { content: content }),
       ...(newImageId && { imageId: newImageId }),
       ...(slug && { slug }),
@@ -227,7 +231,11 @@ export const searchBlog = cache(
             isPublished: true,
             OR: [
               { title: { contains: query, mode: "insensitive" } },
-              { content: { contains: query, mode: "insensitive" } },
+              { description: { contains: query, mode: "insensitive" } },
+              {
+                content: { contains: query, mode: "insensitive" },
+                tags: { some: { name: query } },
+              },
             ],
           },
           skip,
@@ -240,7 +248,11 @@ export const searchBlog = cache(
             isPublished: true,
             OR: [
               { title: { contains: query, mode: "insensitive" } },
-              { content: { contains: query, mode: "insensitive" } },
+              { description: { contains: query, mode: "insensitive" } },
+              {
+                content: { contains: query, mode: "insensitive" },
+                tags: { some: { name: query } },
+              },
             ],
           },
         }),

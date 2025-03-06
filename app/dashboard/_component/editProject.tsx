@@ -17,6 +17,7 @@ interface EditProjectProps {
   project: {
     id: string;
     title: string;
+    description: string;
     content: string;
     thumbnail: {
       imageUrl: string;
@@ -31,7 +32,8 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
       title: project.title,
-      description: project.content,
+      description: project.description,
+      content: project.content,
       technologies: project.technologies.map((t) => t.name).join(", "),
       imageFile: null as File | null,
     },
@@ -42,7 +44,7 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
 
   const router = useRouter();
 
-  const description = watch("description");
+  const content = watch("content");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
@@ -50,6 +52,7 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
     formData.append("id", project.id);
     formData.append("title", data.title);
     formData.append("description", data.description);
+    formData.append("content", data.content);
     formData.append("technologies", data.technologies);
 
     if (data.imageFile?.length > 0) {
@@ -90,6 +93,17 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
             className="w-full p-2 border rounded"
           />
         </div>
+        {/* description */}
+        <div className="space-y-3">
+          <Label htmlFor="description" className="block font-medium">
+            Description
+          </Label>
+          <Input
+            id="description"
+            {...register("description", { required: true })}
+            className="w-full p-2 border rounded"
+          />
+        </div>
 
         {/* Technologies */}
         <div className="space-y-3">
@@ -103,10 +117,10 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
           />
         </div>
 
-        {/* Description (Markdown Editor) */}
+        {/* Content (Markdown Editor) */}
         <div className="space-y-3">
           <Label htmlFor="body" className="block font-medium">
-            Description
+            Content
           </Label>
           <Button
             variant="outline"
@@ -119,13 +133,13 @@ const EditProject: React.FC<EditProjectProps> = ({ project }) => {
           {preview ? (
             <div className="prose dark:prose-invert">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {description}
+                {content}
               </ReactMarkdown>
             </div>
           ) : (
             <Textarea
               id="body"
-              {...register("description")}
+              {...register("content")}
               className="w-full p-2 border rounded h-32"
             />
           )}

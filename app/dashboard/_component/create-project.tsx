@@ -49,6 +49,7 @@ export default function CreateProject() {
       setLoading(true);
       const { data, content } = matter(body);
       const title = data.title || "Untitled";
+      const description = data.description || "No description";
       const technologies = Array.isArray(data.technologies)
         ? data.technologies.join(",")
         : "";
@@ -56,7 +57,8 @@ export default function CreateProject() {
       const formData = new FormData();
       formData.append("imageFile", imageFile);
       formData.append("title", title);
-      formData.append("description", content);
+      formData.append("description", description);
+      formData.append("content", content);
       formData.append("technologies", technologies);
 
       const { error, success } = await createProject(formData);

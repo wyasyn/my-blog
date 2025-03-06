@@ -18,6 +18,7 @@ interface EditBlogProps {
   blog: {
     id: string;
     title: string;
+    description: string;
     content: string;
     slug: string;
     thumbnail: {
@@ -33,7 +34,8 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
   const { register, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
       title: blog.title,
-      description: blog.content,
+      description: blog.description,
+      content: blog.content,
       tags: blog.tags.map((t) => t.name).join(", "),
       imageFile: null as File | null,
     },
@@ -44,14 +46,15 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
 
   const router = useRouter();
 
-  const description = watch("description");
+  const content = watch("content");
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: any) => {
     const formData = new FormData();
     formData.append("id", blog.id);
     formData.append("title", data.title);
-    formData.append("content", data.description);
+    formData.append("description", data.description);
+    formData.append("content", data.content);
     formData.append("tags", data.tags);
 
     if (data.imageFile?.length > 0) {
@@ -91,6 +94,17 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
             className="w-full p-2 border rounded"
           />
         </div>
+        {/* Description */}
+        <div className="space-y-3">
+          <Label htmlFor="description" className="block font-medium">
+            Description
+          </Label>
+          <Textarea
+            id="description"
+            {...register("description", { required: true })}
+            className="w-full p-2 border rounded"
+          />
+        </div>
 
         {/* Tags */}
         <div className="space-y-3">
@@ -120,13 +134,13 @@ const EditBlog: React.FC<EditBlogProps> = ({ blog }) => {
           {preview ? (
             <div className="prose dark:prose-invert">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {description}
+                {content}
               </ReactMarkdown>
             </div>
           ) : (
             <Textarea
               id="body"
-              {...register("description")}
+              {...register("content")}
               className="w-full p-2 border rounded h-32"
             />
           )}

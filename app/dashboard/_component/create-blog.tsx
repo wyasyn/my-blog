@@ -49,12 +49,15 @@ export default function CreateBlog() {
       setLoading(true);
       const { data, content } = matter(body);
       const title = data.title || "Untitled";
+      const description = data.description || "No description";
       const tags = Array.isArray(data.tags) ? data.tags.join(",") : "";
 
       const formData = new FormData();
       formData.append("imageFile", imageFile);
       formData.append("title", title);
       formData.append("content", content);
+      formData.append("description", description);
+
       formData.append("tags", tags);
 
       const { success, error } = await createBlog(formData);

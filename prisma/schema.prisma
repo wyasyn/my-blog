@@ -31,12 +31,13 @@ model User {
 }
 
 model Project {
-  id        String   @id @default(cuid())
-  title     String
-  content   String
-  slug      String   @unique
-  thumbnail Image    @relation(fields: [imageId], references: [id]) // URL for project thumbnail image
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  content     String
+  slug        String   @unique
+  thumbnail   Image    @relation(fields: [imageId], references: [id]) // URL for project thumbnail image
+  createdAt   DateTime @default(now())
 
   userId       String?
   user         User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -47,6 +48,7 @@ model Project {
 model BlogPost {
   id          String    @id @default(cuid())
   title       String
+  description String
   content     String
   slug        String    @unique
   isPublished Boolean   @default(false)
