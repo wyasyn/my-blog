@@ -9,7 +9,7 @@ export default function page() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const email = process.env.EMAIL;
   return (
-    <main className="w-[95%] max-w-[990px] bg-secondary p-8 lg:p-12 prose dark:prose-invert rounded-lg mx-auto border my-8 lg:my-14 prose-h1:tracking-wide prose-h2:tracking-wide prose-h3:tracking-wide prose-h4:tracking-wider prose-h5:tracking-wider prose-p:text-muted-foreground prose-li:text-muted-foreground">
+    <main className="w-[95%] max-w-prose bg-secondary p-8 lg:p-12 prose dark:prose-invert rounded-lg mx-auto border my-8 lg:my-14 prose-h1:tracking-wide prose-h2:tracking-wide prose-h3:tracking-wide prose-h4:tracking-wider prose-h5:tracking-wider prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-[#AC1754]">
       <h1>Privacy Policy</h1>
       <p>Last updated: {new Date().toLocaleDateString()}</p>
       <p>

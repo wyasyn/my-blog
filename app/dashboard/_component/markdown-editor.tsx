@@ -228,7 +228,6 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
               remarkPlugins={[remarkGfm]}
               components={{
                 code({
-                  inline,
                   className,
                   children,
                 }: {
@@ -240,17 +239,14 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
                   const match = /language-(\w+)/.exec(className || "");
                   const language = match?.[1] || "plaintext";
 
-                  // If it's a code block (not inline), use the CodeBlock component
-                  if (!inline) {
-                    return (
-                      <CodeBlock
-                        code={String(children).trim()}
-                        language={language}
-                      />
-                    );
-                  }
-                  // For inline code, use a plain code tag with no additional styles
-                  return <InlineCode code={String(children).trim()} />;
+                  return match ? (
+                    <CodeBlock
+                      code={String(children).trim()}
+                      language={language}
+                    />
+                  ) : (
+                    <InlineCode code={String(children).trim()} />
+                  );
                 },
               }}
             >

@@ -14,6 +14,7 @@ import RelatedBlog from "@/components/releatedBlog";
 import { Metadata } from "next";
 import { socials } from "@/components/homePage/hero";
 import { InlineCode } from "@/components/inline-code";
+import BackButton from "@/components/back-button";
 
 type Params = {
   params: Promise<{ slug: string }>;
@@ -71,7 +72,11 @@ export default async function SingleBlogPage({ params }: Params) {
 
   return (
     <main>
-      <header className="mb-12 md:mb-20">
+      <header className="mb-12 md:mb-20 flex flex-col max-w-prose items-center mx-auto text-center">
+        <div className="w-full pt-3 flex items-start pb-6">
+          <BackButton />
+        </div>
+
         <h1 className="text-balance">{blogPost.title}</h1>
         <p className="flex items-center gap-4 mb-3 text-sm">
           <span className="flex items-center gap-2">
@@ -84,7 +89,7 @@ export default async function SingleBlogPage({ params }: Params) {
             {formatDateString(blogPost.publishedAt?.toISOString() || "")}
           </span>
         </p>
-        <div className=" my-4 flex items-center gap-4 flex-wrap">
+        <div className=" my-4 flex items-center justify-center gap-4 flex-wrap">
           {blogPost.tags &&
             blogPost.tags.length > 0 &&
             blogPost.tags.map((tag) => (
@@ -105,7 +110,6 @@ export default async function SingleBlogPage({ params }: Params) {
           remarkPlugins={[remarkGfm]}
           components={{
             code({
-              inline,
               className,
               children,
             }: {
@@ -117,17 +121,11 @@ export default async function SingleBlogPage({ params }: Params) {
               const match = /language-(\w+)/.exec(className || "");
               const language = match?.[1] || "plaintext";
 
-              // If it's a code block (not inline), use the CodeBlock component
-              if (!inline) {
-                return (
-                  <CodeBlock
-                    code={String(children).trim()}
-                    language={language}
-                  />
-                );
-              }
-              // For inline code, use a plain code tag with no additional styles
-              return <InlineCode code={String(children).trim()} />;
+              return match ? (
+                <CodeBlock code={String(children).trim()} language={language} />
+              ) : (
+                <InlineCode code={String(children).trim()} />
+              );
             },
           }}
         >

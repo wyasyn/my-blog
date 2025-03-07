@@ -15,6 +15,7 @@ import LoadingSkeleton from "@/components/loadingSkeleton";
 import { Metadata } from "next";
 import { Article, WithContext } from "schema-dts";
 import { InlineCode } from "@/components/inline-code";
+import BackButton from "@/components/back-button";
 
 export async function generateStaticParams() {
   const { projects } = await getPaginatedProjects();
@@ -73,7 +74,10 @@ export default async function SingleProjectPage({ params }: Params) {
   };
   return (
     <main>
-      <header className="mb-12 md:mb-20">
+      <header className="mb-12 md:mb-20 flex flex-col max-w-prose items-center mx-auto text-center">
+        <div className="w-full pt-3 flex items-start pb-6">
+          <BackButton />
+        </div>
         <h1 className="text-balance">{project.title}</h1>
         <p className="flex items-center gap-4 mb-3 text-sm">
           <span className="flex items-center gap-2">
@@ -86,7 +90,7 @@ export default async function SingleProjectPage({ params }: Params) {
             {formatDateString(project.createdAt.toISOString())}
           </span>
         </p>
-        <div className=" my-4 flex items-center gap-4 flex-wrap">
+        <div className=" my-4 flex items-center justify-center gap-4 flex-wrap">
           {project.technologies &&
             project.technologies.length > 0 &&
             project.technologies.map((technology) => (
@@ -100,12 +104,11 @@ export default async function SingleProjectPage({ params }: Params) {
             ))}
         </div>
       </header>
-      <section className="prose dark:prose-invert prose-pre:bg-transparent prose-pre:p-0 prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-muted-foreground prose-h3:text-muted-foreground mx-auto">
+      <section className="prose dark:prose-invert prose-h2:text-[#AC1754] prose-pre:bg-transparent prose-pre:p-0 prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h3:text-muted-foreground mx-auto">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
             code({
-              inline,
               className,
               children,
             }: {
@@ -117,18 +120,11 @@ export default async function SingleProjectPage({ params }: Params) {
               const match = /language-(\w+)/.exec(className || "");
               const language = match?.[1] || "plaintext";
 
-              // If it's a code block (not inline), use the CodeBlock component
-              if (!inline) {
-                return (
-                  <CodeBlock
-                    code={String(children).trim()}
-                    language={language}
-                  />
-                );
-              }
-
-              // For inline code, use a plain code tag with no additional styles
-              return <InlineCode code={String(children).trim()} />;
+              return match ? (
+                <CodeBlock code={String(children).trim()} language={language} />
+              ) : (
+                <InlineCode code={String(children).trim()} />
+              );
             },
           }}
         >
