@@ -1,3 +1,4 @@
+import Chatbot from "@/components/chatbot";
 import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import Shape from "@/components/shape";
@@ -8,6 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Navbar />
       <main className="wrapper flex-1 border-l border-r mt-15 lg:mt-19 relative z-2">
         {children}
+        <Chatbot />
       </main>
       <Footer />
       <Shape
