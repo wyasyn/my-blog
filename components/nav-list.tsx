@@ -5,27 +5,27 @@ export const navData = [
   {
     title: "Home",
     href: "/",
-    icon: <Home size={32} />,
+    icon: <Home size={24} />,
   },
   {
     title: "About",
     href: "/about",
-    icon: <User size={32} />,
+    icon: <User size={24} />,
   },
   {
     title: "Projects",
     href: "/projects",
-    icon: <Briefcase size={32} />,
+    icon: <Briefcase size={24} />,
   },
   {
     title: "Blog",
     href: "/blog",
-    icon: <Newspaper size={32} />,
+    icon: <Newspaper size={24} />,
   },
   {
     title: "Contact",
     href: "/contact",
-    icon: <Mail size={32} />,
+    icon: <Mail size={24} />,
   },
 ];
 export default function NavList() {

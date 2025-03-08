@@ -36,7 +36,7 @@ export default function MobileNavList() {
               </SheetDescription>
             </SheetHeader>
           </VisuallyHidden>
-          <ul className="flex flex-col gap-6 mt-8 p-8 font-serif text-3xl ">
+          <ul className="flex flex-col gap-6 mt-8 py-8 font-serif text-2xl ">
             {navData.map((item) => {
               const isActive =
                 item.href === "/"

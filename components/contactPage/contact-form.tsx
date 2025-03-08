@@ -64,7 +64,7 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="max-w-lg shadow-md rounded-lg mb-[5rem]">
+    <div className="max-w-lg shadow-md px-3 py-6 rounded-lg mb-[5rem] lg:max-h-[300px]">
       {formStatus === "success" && (
         <Alert className="mb-4">
           <MailCheck className="w-4 h-4" />
@@ -142,7 +142,7 @@ export default function ContactForm() {
             {isSubmitting ? "Sending..." : "Send Message"}
           </Button>
           <Button type="button" onClick={handleClear} variant="destructive">
-            <Trash2 className="w-4 h-4 mr-2" />
+            <Trash2 className="w-4 h-4" />
             Clear
           </Button>
         </div>

@@ -79,12 +79,12 @@ export default async function SingleBlogPage({ params }: Params) {
 
         <h1 className="text-balance">{blogPost.title}</h1>
         <p className="flex items-center gap-4 mb-3 text-sm">
-          <span className="flex items-center gap-2">
+          <span className="flex items-center flex-wrap gap-2">
             <Clock className="w-4 h-4" />{" "}
             {calculateReadingTime(blogPost.content)} min
           </span>{" "}
           |{" "}
-          <span className="flex items-center gap-2">
+          <span className="flex items-center flex-wrap gap-2">
             <Calendar className="w-4 h-4" />
             {formatDateString(blogPost.publishedAt?.toISOString() || "")}
           </span>

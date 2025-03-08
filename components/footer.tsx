@@ -5,8 +5,8 @@ import { socials } from "./homePage/hero";
 
 const Footer = () => {
   return (
-    <footer className=" py-6 w-full bg-secondary border-t rounded-[0_5rem_0_0]">
-      <div className="wrapper px-0 flex flex-col md:flex-row justify-between items-center">
+    <footer className=" py-6 w-full bg-secondary border-t rounded-[0_5rem_0_0] min-[1016px]:rounded-none min-[1200px]:rounded-[0_5rem_0_0]">
+      <div className="wrapper px-3 text-center min-[1170px]:text-start min-[1170px]:px-0 flex flex-col min-[1170px]:flex-row min-[1170px]:justify-between gap-6 items-center">
         <div>
           <p className="text-sm">
             &copy; {new Date().getFullYear()} Yasin Walum. All rights reserved.
@@ -19,7 +19,7 @@ const Footer = () => {
           </Link>
         </div>
 
-        <nav className="flex space-x-4 mt-4 md:mt-0 flex-wrap">
+        <nav className="flex space-x-4 mt-4 md:mt-0 flex-wrap items-center justify-center">
           {navData.map((item, index) => {
             return (
               <Button key={index} variant="link" size="sm">

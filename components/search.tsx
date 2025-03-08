@@ -132,7 +132,7 @@ export default function Search() {
     <>
       <button
         type="button"
-        className="border-input bg-secondary/75 text-muted-foreground placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-9 w-fit rounded-md border px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px]"
+        className="border-input bg-secondary/75 text-muted-foreground placeholder:text-muted-foreground/70 focus-visible:border-ring focus-visible:ring-ring/50 inline-flex h-9 w-fit rounded-md border px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] max-[350px]:hidden"
         onClick={() => setOpen(true)}
       >
         <span className="flex grow items-center">
