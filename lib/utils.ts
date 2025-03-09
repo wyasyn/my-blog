@@ -36,10 +36,7 @@ export function formatDateString(dateStr: string): string {
     year: "numeric",
     month: "long",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
   };
 
-  return date.toLocaleString("en-US", options).replace("at", " |");
+  return date.toLocaleString("en-US", options);
 }

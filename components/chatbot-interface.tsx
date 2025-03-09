@@ -114,7 +114,7 @@ export default function ChatbotInterface() {
         <button
           className={cn(
             "bg-transparent px-3 shrink-0 py-2 cursor-pointer",
-            message || loading ? "text-orange-500" : "text-muted"
+            message || loading ? "text-orange-500" : "text-muted-foreground/50"
           )}
           type="submit"
           disabled={message.length === 0 || loading}
