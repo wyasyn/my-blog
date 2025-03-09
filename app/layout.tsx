@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/theme-provider";
-import { ChatbotProvider } from "@/providers/chatbot-provider";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 const playfair = localFont({
@@ -109,10 +108,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ChatbotProvider>
-            {children}
-            <Toaster />
-          </ChatbotProvider>
+          {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
