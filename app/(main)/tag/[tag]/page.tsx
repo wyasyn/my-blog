@@ -12,7 +12,9 @@ type Params = {
 
 export async function generateStaticParams() {
   const result = await getAllTags();
-  if (!result || !result.tags) return;
+  if (!result) {
+    throw new Error("Failed to fetch tags");
+  }
   const { tags } = result;
   return tags.map((tag) => ({
     slug: tag.slug,

@@ -11,7 +11,9 @@ type Params = {
 };
 export async function generateStaticParams() {
   const result = await getTechnologies();
-  if (!result || !result.technologies) return;
+  if (!result) {
+    throw new Error("Failed to fetch technologies");
+  }
   const { technologies } = result;
   return technologies.map((tech) => ({
     slug: tech.slug,
