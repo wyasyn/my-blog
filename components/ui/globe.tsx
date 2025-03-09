@@ -1,3 +1,7 @@
+/* eslint-disable no-var */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Color, Scene, Fog, PerspectiveCamera, Vector3 } from "three";
@@ -115,6 +119,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
 
   const _buildData = () => {
     const arcs = data;
+    // eslint-disable-next-line prefer-const
     let points = [];
     for (let i = 0; i < arcs.length; i++) {
       const arc = arcs[i];
@@ -157,6 +162,7 @@ export function Globe({ globeConfig, data }: WorldProps) {
         .showAtmosphere(defaultProps.showAtmosphere)
         .atmosphereColor(defaultProps.atmosphereColor)
         .atmosphereAltitude(defaultProps.atmosphereAltitude)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .hexPolygonColor((e) => {
           return defaultProps.polygonColor;
         });
