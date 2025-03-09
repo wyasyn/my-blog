@@ -1,5 +1,11 @@
 "use client";
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 
 interface ChatbotContextType {
   open: boolean;
@@ -15,9 +21,23 @@ export const ChatbotProvider = ({ children }: { children: ReactNode }) => {
   const openChatbot = () => {
     setOpen(true);
   };
+
   const closeChatbot = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden"; // Disable body scrolling
+    } else {
+      document.body.style.overflow = ""; // Restore scrolling when chatbot is closed
+    }
+
+    return () => {
+      document.body.style.overflow = ""; // Cleanup on unmount
+    };
+  }, [open]);
+
   return (
     <ChatbotContext.Provider
       value={{
