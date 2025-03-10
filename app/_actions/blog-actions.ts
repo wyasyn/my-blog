@@ -50,6 +50,10 @@ export const createBlog = async (formData: FormData) => {
       },
     });
 
+    revalidatePath("/dashboard/blog");
+    revalidatePath("/blog");
+    revalidatePath("/");
+
     return { success: `${blogPost.title} created successfully`, blogPost };
   } catch (error) {
     console.error("Error creating blog:", error);
@@ -122,6 +126,10 @@ export const deleteBlog = async (slug: string) => {
     await prisma.blogPost.delete({
       where: { slug },
     });
+
+    revalidatePath("/dashboard/blog");
+    revalidatePath("/blog");
+    revalidatePath("/");
 
     return { message: "Blog deleted successfully" };
   } catch (error: unknown) {

@@ -51,6 +51,10 @@ export const createProject = async (formData: FormData) => {
       },
     });
 
+    revalidatePath("/dashboard/projects");
+    revalidatePath("/projects");
+    revalidatePath("/");
+
     return { success: `${project.title} created successfully`, project };
   } catch (error) {
     console.error("Error creating project:", error);
@@ -120,6 +124,10 @@ export const deleteProject = async (slug: string) => {
     await prisma.project.delete({
       where: { slug },
     });
+
+    revalidatePath("/dashboard/projects");
+    revalidatePath("/projects");
+    revalidatePath("/");
 
     return { message: "Project deleted successfully" };
   } catch (error: unknown) {
