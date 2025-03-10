@@ -40,3 +40,9 @@ export function formatDateString(dateStr: string): string {
 
   return date.toLocaleString("en-US", options);
 }
+
+export function deSlugify(slug: string): string {
+  return slug
+    .replace(/-/g, " ") // Replace hyphens with spaces
+    .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize each word
+}
