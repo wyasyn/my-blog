@@ -109,7 +109,7 @@ export default async function SingleBlogPage({ params }: Params) {
       </header>
 
       {/* Markdown Renderer with Custom Code Block */}
-      <section className="prose dark:prose-invert prose-pre:bg-transparent prose-pre:p-0 prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-muted-foreground prose-h3:text-muted-foreground mx-auto">
+      <section className="prose dark:prose-invert prose-pre:bg-transparent prose-pre:p-0 prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-muted-foreground prose-h3:text-muted-foreground mx-auto prose-p:text-wrap prose-p:max-w-prose">
         <ReactMarkdown
           remarkPlugins={[remarkGfm, remarkMath]}
           rehypePlugins={[rehypeKatex]}
