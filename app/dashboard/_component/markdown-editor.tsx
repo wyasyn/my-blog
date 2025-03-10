@@ -27,6 +27,8 @@ import {
 import { cn } from "@/lib/utils";
 import CodeBlock from "@/components/code-block";
 import { InlineCode } from "@/components/inline-code";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 interface MarkdownEditorProps {
   value: string;
@@ -225,7 +227,8 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
         >
           {value ? (
             <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
+              remarkPlugins={[remarkGfm, remarkMath]}
+              rehypePlugins={[rehypeKatex]}
               components={{
                 code({
                   className,

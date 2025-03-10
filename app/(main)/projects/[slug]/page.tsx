@@ -16,6 +16,8 @@ import { Metadata } from "next";
 import { Article, WithContext } from "schema-dts";
 import { InlineCode } from "@/components/inline-code";
 import BackButton from "@/components/back-button";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 export async function generateStaticParams() {
   const { projects } = await getPaginatedProjects();
@@ -106,13 +108,13 @@ export default async function SingleProjectPage({ params }: Params) {
       </header>
       <section className="prose dark:prose-invert prose-h2:text-[#AC1754] prose-pre:bg-transparent prose-pre:p-0 prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h3:text-muted-foreground mx-auto">
         <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
+          remarkPlugins={[remarkGfm, remarkMath]}
+          rehypePlugins={[rehypeKatex]}
           components={{
             code({
               className,
               children,
             }: {
-              inline?: boolean;
               className?: string;
               children?: React.ReactNode;
             }) {

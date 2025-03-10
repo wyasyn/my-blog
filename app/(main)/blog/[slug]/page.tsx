@@ -1,8 +1,9 @@
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import CodeBlock from "@/components/code-block";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import { Article, WithContext } from "schema-dts";
-
 import { Calendar, Clock } from "lucide-react";
 import { calculateReadingTime, formatDateString } from "@/lib/utils";
 import Link from "next/link";
@@ -15,6 +16,9 @@ import { Metadata } from "next";
 import { socials } from "@/components/homePage/hero";
 import { InlineCode } from "@/components/inline-code";
 import BackButton from "@/components/back-button";
+
+import "katex/dist/katex.min.css";
+import CodeBlock from "@/components/code-block";
 
 type Params = {
   params: Promise<{ slug: string }>;
@@ -107,20 +111,13 @@ export default async function SingleBlogPage({ params }: Params) {
       {/* Markdown Renderer with Custom Code Block */}
       <section className="prose dark:prose-invert prose-pre:bg-transparent prose-pre:p-0 prose-p:text-muted-foreground prose-li:text-muted-foreground prose-h2:text-muted-foreground prose-h3:text-muted-foreground mx-auto">
         <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
+          remarkPlugins={[remarkGfm, remarkMath]}
+          rehypePlugins={[rehypeKatex]}
           components={{
-            code({
-              className,
-              children,
-            }: {
-              inline?: boolean;
-              className?: string;
-              children?: React.ReactNode;
-            }) {
-              // Extract language from className if it exists
+            // Custom render for code blocks
+            code({ className, children }) {
               const match = /language-(\w+)/.exec(className || "");
               const language = match?.[1] || "plaintext";
-
               return match ? (
                 <CodeBlock code={String(children).trim()} language={language} />
               ) : (
@@ -136,6 +133,8 @@ export default async function SingleBlogPage({ params }: Params) {
       <Suspense fallback={<LoadingSkeleton />}>
         <RelatedBlog slug={blogPost.slug} />
       </Suspense>
+
+      {/* JSON-LD for SEO */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
