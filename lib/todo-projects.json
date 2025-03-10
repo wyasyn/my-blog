@@ -1,0 +1,109 @@
+{
+  "todo-projects": [
+    {
+      "title": "AI-Powered Face Recognition Attendance System",
+      "description": "A web-based attendance system that uses face recognition for authentication. Admins can register users, and attendance is marked automatically when a user is recognized.",
+      "technologies": [
+        "Next.js",
+        "TensorFlow.js",
+        "Node.js",
+        "MongoDB",
+        "TailwindCSS",
+        "FastAPI"
+      ]
+    },
+    {
+      "title": "Smart Expense Tracker",
+      "description": "A mobile and web application that helps users track their income and expenses, offering insights through data visualization and budget management.",
+      "technologies": [
+        "Flutter",
+        "React",
+        "Node.js",
+        "Express",
+        "PostgreSQL",
+        "FastAPI",
+        "Docker"
+      ]
+    },
+    {
+      "title": "Real-Time Chat Application",
+      "description": "A real-time chat app with private and group messaging, end-to-end encryption, and a notification system.",
+      "technologies": [
+        "Next.js",
+        "Socket.io",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "TailwindCSS"
+      ]
+    },
+    {
+      "title": "AI-Powered Resume Analyzer",
+      "description": "A web-based tool that analyzes resumes and provides feedback based on job descriptions using AI and NLP.",
+      "technologies": [
+        "React",
+        "Flask",
+        "Python",
+        "OpenAI API",
+        "FastAPI",
+        "TailwindCSS"
+      ]
+    },
+    {
+      "title": "Cybersecurity Threat Detection System",
+      "description": "A system that detects and logs potential security threats using AI-powered anomaly detection.",
+      "technologies": [
+        "Python",
+        "Django",
+        "TensorFlow",
+        "Scikit-learn",
+        "FastAPI",
+        "Docker"
+      ]
+    },
+    {
+      "title": "AI-Powered Code Review Assistant",
+      "description": "An AI-based tool that reviews code for best practices, performance issues, and security vulnerabilities.",
+      "technologies": [
+        "Next.js",
+        "Python",
+        "FastAPI",
+        "OpenAI API",
+        "TailwindCSS"
+      ]
+    },
+    {
+      "title": "E-commerce Platform with AI Recommendations",
+      "description": "A full-stack e-commerce platform with AI-driven personalized product recommendations.",
+      "technologies": [
+        "Remix",
+        "Next.js",
+        "FastAPI",
+        "PostgreSQL",
+        "Docker",
+        "TailwindCSS"
+      ]
+    },
+    {
+      "title": "Machine Learning-Powered Chatbot",
+      "description": "A chatbot that provides automated responses and learns from interactions using NLP techniques.",
+      "technologies": ["Python", "Flask", "TensorFlow", "Dialogflow", "React"]
+    },
+    {
+      "title": "IoT-Based Smart Home System",
+      "description": "A web and mobile dashboard to control IoT devices for a smart home system, including real-time monitoring and automation.",
+      "technologies": ["Flutter", "Next.js", "Node.js", "MQTT", "Firebase"]
+    },
+    {
+      "title": "Personalized Learning Platform",
+      "description": "A learning management system that personalizes study materials based on user progress and AI-generated recommendations.",
+      "technologies": [
+        "Next.js",
+        "Django",
+        "PostgreSQL",
+        "TensorFlow",
+        "Docker"
+      ]
+    }
+  ]
+}
